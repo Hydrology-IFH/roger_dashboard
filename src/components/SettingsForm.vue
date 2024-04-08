@@ -1,0 +1,82 @@
+<script setup>
+  import { useSettings } from '../stores/settings'
+  import GearIcon from './icons/IconGear.vue'
+  import DecimalsInput from './inputs/DecimalsInput.vue'
+  import FilePathInput from './inputs/FilePathInput.vue'
+  import SelectInput from './inputs/SelectionInput.vue'
+
+  const settings = useSettings()
+
+</script>
+
+<template>
+  <div class="settings" id="settings">
+
+    <a id="OpenSettingsButton" type="button" data-bs-toggle="modal" data-bs-target="#settingsModal"><GearIcon size="24"/></a>
+
+    <div class="modal fade" id="settingsModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="settingsModalLabel">Settings</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="none">
+              <ul class="nav nav-tabs" id="SettingsTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="representation-tab" data-bs-toggle="tab" data-bs-target="#representation-tab-pane" type="button" role="tab" aria-controls="representation-tab-pane" aria-selected="true">Representation</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="paths-tab" data-bs-toggle="tab" data-bs-target="#paths-tab-pane" type="button" role="tab" aria-controls="paths-tab-pane" aria-selected="false">Paths</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="map-tab" data-bs-toggle="tab" data-bs-target="#map-tab-pane" type="button" role="tab" aria-controls="map-tab-pane" aria-selected="false">Map Settings</button>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="representation-tab-pane" role="tabpanel" aria-labelledby="representation-tab" tabindex="0">
+                  <DecimalsInput v-model="settings.decimals"/>
+                </div>
+                <div class="tab-pane fade" id="paths-tab-pane" role="tabpanel" aria-labelledby="paths-tab" tabindex="0">
+                  <FilePathInput name="Root RoGeR output folder"
+                    tooltipMsg="The root output folder (as defined in the control file) of the RoGeR results as a relative path from the curent html file"
+                    v-model="settings.roger_root_out_folder"/>
+                  <FilePathInput name="RoGeR output subfolder"
+                    tooltipMsg="Sub-Path of the RoGeR outputs inside the root folder. Direct to the place where the results are."
+                    v-model="settings.roger_out_folder_part" v-model:full_path="settings.roger_out_folder"/>
+                  <FilePathInput name="RoGeR OA time series file"
+                    tooltipMsg="The file containing the time series of the OA and N values"
+                    v-model="settings.roger_oa_ts_file_part" v-model:full_path="settings.roger_oa_ts_file"/>
+                  <FilePathInput name="RoGeR total OA GeoTiff file"
+                    tooltipMsg="The GeoTiff file containing the total OA results"
+                    v-model="settings.roger_oa_tiff_file_part" v-model:full_path="settings.roger_oa_tiff_file"/>
+                </div>
+                <div class="tab-pane fade" id="map-tab-pane" role="tabpanel" aria-labelledby="map-tab" tabindex="0">
+                  <SelectInput name="Basemap" v-model="settings.basemap" :sel_options="['osm', 'basemap_color', 'basemap_grey']" tooltipMsg="The basemap to use in the map"/>
+                  <SelectInput name="Colorscale" v-model="settings.colorscale" :sel_options="['inferno', 'viridis', 'plasma', 'magma']" tooltipMsg="The colorscale to use in the map"/>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+  .tab-content {
+    padding-top: 1rem;
+  }
+  a#OpenSettingsButton {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    color: black;
+  }
+  a#OpenSettingsButton:hover{
+  opacity: 1;
+  color: var(--bs-primary);
+}
+</style>
