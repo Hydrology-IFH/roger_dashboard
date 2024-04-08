@@ -3,7 +3,7 @@
   import { ref, onMounted, watch } from 'vue';
   import { containsCoordinate } from 'ol/extent.js';
   import Overlay from 'ol/Overlay.js';
-  import { useSettings } from '../../stores/settings'
+  import { useSettings } from '../../../stores/settings'
 
   const settings = useSettings()
 
@@ -77,4 +77,4 @@
     visibility: hidden;
     pointer-events: none;
   }
-</style>
+</style>../../../stores/settings

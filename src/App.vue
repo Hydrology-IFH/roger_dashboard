@@ -1,7 +1,7 @@
 <script setup>
   import OATimeseriePlot from './components/OATimeseriePlot.vue'
-import OAMapPlot from './components/OAMapPlot.vue'
-import SettingsForm from './components/SettingsForm.vue'
+  import OAMapPlot from './components/map/OAMapPlot.vue'
+  import SettingsForm from './components/SettingsForm.vue'
 </script>
 
 <template>

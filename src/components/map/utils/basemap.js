@@ -1,9 +1,9 @@
 import { get as getProjection } from 'ol/proj.js';
 import OSM from 'ol/source/OSM.js';
 import TileWMS from 'ol/source/TileWMS.js';
+import "./projections"
 
-
-let basemap_proj = getProjection("EPSG:3857");
+let basemap_proj = getProjection("EPSG:25832");
 
 export const basemap_sources = {
   basemap_grey: new TileWMS({

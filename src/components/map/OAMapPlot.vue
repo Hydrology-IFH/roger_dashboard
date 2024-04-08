@@ -1,15 +1,15 @@
 <script setup>
-  import { useSettings } from '../stores/settings'
+  import { useSettings } from '../../stores/settings'
   import { ref, watchEffect, onMounted } from 'vue'
   import TileLayer from 'ol/layer/WebGLTile.js';
   import GeoTIFF from 'ol/source/GeoTIFF.js';
   import { Map, View } from 'ol';
   import { buffer } from 'ol/extent';
 
-  import  { get_colorscale_tileLayer_style } from './map_utils/styles'
-  import { basemap_sources } from './map_utils/basemap'
-  import hoverOverlay from './map_utils/hoverOverlay.vue'
-import { dot$1 } from 'plotly.js-dist';
+  import  { get_colorscale_tileLayer_style } from './utils/styles'
+  import { basemap_sources } from './utils/basemap'
+  import hoverOverlay from './utils/hoverOverlay.vue'
+
 
   const settings = useSettings()
   const cont = {}
@@ -88,9 +88,8 @@ import { dot$1 } from 'plotly.js-dist';
 <style scoped>
   .plot {
     width: 100%;
-    height: 100%;
     min-width: 400px;
-    min-height: 400px || 100vh;
+    height: calc(100vh - 6rem);
   }
   .ol-viewport {
     overflow: visible !important;
@@ -102,4 +101,4 @@ import { dot$1 } from 'plotly.js-dist';
     width:100%;
     height:100%
   }
-</style>
+</style>./utils/styles./utils/basemap./utils/hoverOverlay.vue
