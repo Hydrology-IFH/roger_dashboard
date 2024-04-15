@@ -1,6 +1,8 @@
-@import "bootstrap/scss/bootstrap";
-
 // customize bootstrap variables
 $primary: #00376D;
 $secondary: #004A99;
 $warning: #c1002a;
+$table-striped-bg-factor: .08;
+
+
+@import "bootstrap/scss/bootstrap";

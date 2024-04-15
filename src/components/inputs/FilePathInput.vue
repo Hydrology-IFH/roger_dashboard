@@ -25,7 +25,7 @@
     <input type="text" class="form-control" :name="`input_${name}`" :id="`input_${name}`" v-model="path"/>
     <span class="input-group-text" v-if="full_path"
       data-bs-toggle="tooltip" data-bs-placement="top"
-      data-bs-title="As this setting is a sub path it is combined with other path settings to become this path">
+      data-bs-title="As this setting is a sub path, it is combined with other path settings to become the full path displayed here">
       {{full_path}}
     </span>
   </div>

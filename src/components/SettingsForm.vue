@@ -1,11 +1,14 @@
 <script setup>
   import { useSettings } from '../stores/settings'
+  import { useControlFile} from '../stores/controlFile'
   import GearIcon from './icons/IconGear.vue'
   import DecimalsInput from './inputs/DecimalsInput.vue'
   import FilePathInput from './inputs/FilePathInput.vue'
   import SelectInput from './inputs/SelectionInput.vue'
+  import SettingsControlFile from './SettingsControlFile.vue'
 
   const settings = useSettings()
+  const controlFile = useControlFile()
 
 </script>
 
@@ -33,6 +36,9 @@
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" id="map-tab" data-bs-toggle="tab" data-bs-target="#map-tab-pane" type="button" role="tab" aria-controls="map-tab-pane" aria-selected="false">Map Settings</button>
                 </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="control-file-tab" data-bs-toggle="tab" data-bs-target="#control-file-tab-pane" type="button" role="tab" aria-controls="control-file-tab-pane" aria-selected="false">Control File</button>
+                </li>
               </ul>
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="representation-tab-pane" role="tabpanel" aria-labelledby="representation-tab" tabindex="0">
@@ -42,6 +48,9 @@
                   <FilePathInput name="Root RoGeR output folder"
                     tooltipMsg="The root output folder (as defined in the control file) of the RoGeR results as a relative path from the curent html file"
                     v-model="settings.roger_root_out_folder"/>
+                  <FilePathInput name="RoGeR control file"
+                    tooltipMsg="The control file of the RoGeR run inside the root output folder"
+                    v-model="settings.roger_control_file_part" v-model:full_path="settings.roger_control_file"/>
                   <FilePathInput name="RoGeR output subfolder"
                     tooltipMsg="Sub-Path of the RoGeR outputs inside the root folder. Direct to the place where the results are."
                     v-model="settings.roger_out_folder_part" v-model:full_path="settings.roger_out_folder"/>
@@ -55,6 +64,9 @@
                 <div class="tab-pane fade" id="map-tab-pane" role="tabpanel" aria-labelledby="map-tab" tabindex="0">
                   <SelectInput name="Basemap" v-model="settings.basemap" :sel_options="['osm', 'basemap_color', 'basemap_grey']" tooltipMsg="The basemap to use in the map"/>
                   <SelectInput name="Colorscale" v-model="settings.colorscale" :sel_options="['inferno', 'viridis', 'plasma', 'magma']" tooltipMsg="The colorscale to use in the map"/>
+                </div>
+                <div class="tab-pane fade" id="control-file-tab-pane" role="tabpanel" aria-labelledby="control-file-tab" tabindex="0">
+                  <SettingsControlFile/>
                 </div>
               </div>
             </form>
