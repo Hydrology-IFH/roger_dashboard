@@ -3,9 +3,9 @@
   import { ref, onMounted } from 'vue';
   import { containsCoordinate } from 'ol/extent.js';
   import Overlay from 'ol/Overlay.js';
-  import { useSettings } from '../../../stores/settings'
+  import { useMapSettings } from '../../../stores/mapSettings'
 
-  const settings = useSettings()
+  const mapSettings = useMapSettings()
 
   const props = defineProps({
     map: Object,
@@ -44,7 +44,7 @@
       let pix_value = props.layer.getData(pixel);
       if ((pix_value != null) && (pix_value[1] != 0)) {
         overlay.setPosition(evt.coordinate);
-        let dec = settings.decimals;
+        let dec = mapSettings.hover_decimals;
         hover_text.value = `${Math.round(parseFloat(pix_value[0]) * 10 ** dec) / 10 ** dec} ${props.unit}`;
       } else {
         overlay.setPosition(undefined);

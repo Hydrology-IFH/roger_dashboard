@@ -30,9 +30,10 @@ export const useSettings = defineStore(
     // other stuff
     /////////////////////////////////////
     const decimals = ref(3)
-    const basemap = ref("basemap_color")
+    const map_default_basemap = ref("basemap_color")
     const crs_epsg = ref(25832)
-    const colorscale = ref("inferno")
+    const map_default_colorscale = ref("inferno")
+    const map_default_opacity = ref(1)
 
     return {
       roger_root_out_folder,
@@ -45,9 +46,10 @@ export const useSettings = defineStore(
       roger_control_file_part,
       roger_control_file,
       decimals,
-      basemap,
+      map_default_basemap,
       crs_epsg,
-      colorscale,
+      map_default_colorscale,
+      map_default_opacity
     }
   },
   { persist: true }

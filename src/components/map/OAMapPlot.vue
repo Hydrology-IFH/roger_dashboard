@@ -1,5 +1,6 @@
 <script setup>
   import { useSettings } from '../../stores/settings'
+  import {useMapSettings} from '../../stores/mapSettings'
   import { ref, watchEffect, onMounted } from 'vue'
   import TileLayer from 'ol/layer/WebGLTile.js';
   import GeoTIFF from 'ol/source/GeoTIFF.js';
@@ -9,9 +10,11 @@
   import  { get_colorscale_tileLayer_style } from './utils/styles'
   import { basemap_sources } from './utils/basemap'
   import hoverOverlay from './utils/hoverOverlay.vue'
+  import mapSettingsApp from './utils/mapSettings.vue'
 
 
   const settings = useSettings()
+  const mapSettings = useMapSettings()
   const cont = {}
   const map_created = ref(false)
 
@@ -19,15 +22,18 @@
   const oa_layer = new TileLayer()
   const basemap = new TileLayer({
         title: "Basemap",
-        source: basemap_sources[settings.basemap]
+        source: basemap_sources[mapSettings.basemap]
   })
 
   // watch settings changes
   watchEffect(() => {
-    basemap.setSource(basemap_sources[settings.basemap])
+    basemap.setSource(basemap_sources[mapSettings.basemap])
   })
   watchEffect(() => {
-    oa_layer.setStyle(get_colorscale_tileLayer_style(0, 10, settings.colorscale, true))
+    oa_layer.setStyle(get_colorscale_tileLayer_style(0, 10, mapSettings.colorscale, true))
+  })
+  watchEffect(() => {
+    oa_layer.setOpacity(mapSettings.opacity / 100)
   })
   watchEffect(async () => {
     oa_layer.setSource(new GeoTIFF({
@@ -85,6 +91,7 @@
 <template>
   <div class="plot" id="oa-map">
     <hoverOverlay v-if="map_created" :map="cont.map" :layer="oa_layer" unit="mm"/>
+    <mapSettingsApp v-if="map_created" :map="cont.map"/>
   </div>
 </template>
 
@@ -94,14 +101,10 @@
     min-width: 400px;
     height: calc(100vh - 6rem);
   }
-  .ol-viewport {
-    overflow: visible !important;
+</style>
+<style>
+  .ol-zoom {
+    left: auto!important;
+    right: 0.5em!important;
   }
-  .ol-viewport canvas.ol-fixedoverlay {
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%
-  }
-</style>./utils/styles./utils/basemap./utils/hoverOverlay.vue
+</style>

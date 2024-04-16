@@ -4,7 +4,7 @@
 
   const sel_var = defineModel({ required: true })
   const props = defineProps({
-    sel_options: [String],
+    sel_options: Array[String],
     name: String,
     tooltipMsg: String
   })
