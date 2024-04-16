@@ -14,8 +14,6 @@
   const settings = useSettings()
   const cont = {}
   const map_created = ref(false)
-  window.cont = cont
-  window.buffer = buffer
 
   // load data from file
   const oa_layer = new TileLayer()
@@ -24,7 +22,7 @@
         source: basemap_sources[settings.basemap]
   })
 
-  // watch settings
+  // watch settings changes
   watchEffect(() => {
     basemap.setSource(basemap_sources[settings.basemap])
   })
@@ -40,7 +38,7 @@
         }
       ],
       sourceOptions: {
-        allowFullFile: true,
+        allowFullFile: false,
       },
       interpolate: false,
       normalize: false
@@ -53,6 +51,9 @@
         extent: buffer(tif_view.extent, Math.abs(tif_view.extent[1] - tif_view.extent[0]) / 2),
         showFullExtent: true,
       }));
+      cont["map"].getView().fit(
+        tif_view.extent,
+        cont["map"].getSize());
     }
   })
 
@@ -68,14 +69,16 @@
       view: new View({
         projection: tif_view.projection,
         center: tif_view.center,
-        extent: buffer(tif_view.extent, Math.abs(tif_view.extent[1] - tif_view.extent[0]) / 2),
+        extent: buffer(tif_view.extent, Math.abs(tif_view.extent[2] - tif_view.extent[0]) / 2),
         showFullExtent: true,
         zoom: 14
       }),
     });
+    cont["map"].getView().fit(
+      tif_view.extent,
+      cont["map"].getSize());
     map_created.value = true
   })
-  window.map_created = map_created
 
 </script>
 

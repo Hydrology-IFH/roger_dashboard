@@ -154,9 +154,7 @@ export const useControlFile = () => {
   })
 
   const s = innerStore();
-  console.log(s.cf_data)
   if (s.cf_data.length == 0) {
-    console.log("get control file")
     s.getControlFile();
   }
   return s;
