@@ -1,6 +1,5 @@
 <script setup>
   import { useSettings } from '../stores/settings'
-  import { useControlFile} from '../stores/controlFile'
   import GearIcon from './icons/IconGear.vue'
   import DecimalsInput from './inputs/DecimalsInput.vue'
   import FilePathInput from './inputs/FilePathInput.vue'
@@ -8,7 +7,6 @@
   import SettingsControlFile from './SettingsControlFile.vue'
 
   const settings = useSettings()
-  const controlFile = useControlFile()
 
 </script>
 
@@ -42,7 +40,7 @@
               </ul>
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="representation-tab-pane" role="tabpanel" aria-labelledby="representation-tab" tabindex="0">
-                  <DecimalsInput v-model="settings.decimals" :min=0 :max=6 tooltipMsg="Select the number of decimals to round the data  in the timeseries plot"/>
+                  <DecimalsInput v-model="settings.timeseries_decimals" :min=0 :max=6 tooltipMsg="Select the number of decimals to round the data  in the timeseries plot"/>
                 </div>
                 <div class="tab-pane fade" id="paths-tab-pane" role="tabpanel" aria-labelledby="paths-tab" tabindex="0">
                   <FilePathInput name="Root RoGeR output folder"
@@ -65,8 +63,12 @@
                   <p>Select the default map Settings. Those Settings are loaded on App startup.</p>
                   <SelectInput name="Basemap" v-model="settings.map_default_basemap" :sel_options="['osm', 'basemap_color', 'basemap_grey']" tooltipMsg="The default basemap to use in the map"/>
                   <SelectInput name="Colorscale" v-model="settings.map_default_colorscale" :sel_options="['inferno', 'viridis', 'plasma', 'magma']" tooltipMsg="The default colorscale to use in the map"/>
-                  <DecimalsInput v-model="settings.map_default_hover_decimals" min=0 max=6 tooltipMsg="Select the default number of decimals to round the hover label to."/>
-                  <DecimalsInput v-model="settings.map_default_opacity" min=0 max=100 tooltipMsg="Select the default opacity of the map"/>
+                  <DecimalsInput v-model="settings.map_default_hover_decimals" :min=0 :max=6
+                    name="Hover decimals"
+                    tooltipMsg="Select the default number of decimals to round the hover label to."/>
+                  <DecimalsInput v-model="settings.map_default_opacity" :min=0 :max=100
+                    name="Opacity"
+                    tooltipMsg="Select the default opacity of the map"/>
                 </div>
                 <div class="tab-pane fade" id="control-file-tab-pane" role="tabpanel" aria-labelledby="control-file-tab" tabindex="0">
                   <SettingsControlFile/>

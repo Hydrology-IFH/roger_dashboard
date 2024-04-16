@@ -13,7 +13,7 @@
     timestep: []
   })
   watchEffect(async () => {
-    let dec = settings.decimals
+    let dec = settings.timeseries_decimals
     fetch(settings.roger_oa_ts_file)
       .then(response => response.text())
       .catch(err => console.error(err))

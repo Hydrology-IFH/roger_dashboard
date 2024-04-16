@@ -1,21 +1,36 @@
-import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useMapSettings = defineStore(
-  'mapSettings',
-  () => {
-    const opacity = ref(100)
-    const selected_layer = ref("")
-    const hover_decimals = ref(3)
-    const basemap = ref("basemap_color")
-    const colorscale = ref("inferno")
+import { useSettings } from './settings'
 
-    return {
-      opacity,
-      selected_layer,
-      hover_decimals,
-      basemap,
-      colorscale,
-    }
+export const useMapSettings = () => {
+  const innerStore =  defineStore({
+    id:'mapSettings',
+    state: () => {
+      return {
+        default_loaded: false,
+        opacity: 100,
+        selected_layer: "",
+        hover_decimals: 3,
+        basemap: "basemap_color",
+        colorscale: "inferno",
+      }
+    },
+    actions: {
+      loadDefaults() {
+        const settings = useSettings()
+        this.opacity = settings.map_default_opacity
+        this.hover_decimals = settings.map_default_hover_decimals
+        this.basemap = settings.map_default_basemap
+        this.colorscale = settings.map_default_colorscale
+        this.default_loaded = true
+      }
+    },
+
+  })
+
+  const s = innerStore();
+  if (!s.default_loaded) {
+    s.loadDefaults();
   }
-)
+  return s;
+}

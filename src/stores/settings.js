@@ -29,11 +29,13 @@ export const useSettings = defineStore(
 
     // other stuff
     /////////////////////////////////////
-    const decimals = ref(3)
-    const map_default_basemap = ref("basemap_color")
+    const timeseries_decimals = ref(3)
     const crs_epsg = ref(25832)
+
+    const map_default_basemap = ref("basemap_color")
     const map_default_colorscale = ref("inferno")
-    const map_default_opacity = ref(1)
+    const map_default_opacity = ref(100)
+    const map_default_hover_decimals = ref(3)
 
     return {
       roger_root_out_folder,
@@ -45,11 +47,12 @@ export const useSettings = defineStore(
       roger_oa_tiff_file,
       roger_control_file_part,
       roger_control_file,
-      decimals,
+      timeseries_decimals,
       map_default_basemap,
       crs_epsg,
       map_default_colorscale,
-      map_default_opacity
+      map_default_opacity,
+      map_default_hover_decimals
     }
   },
   { persist: true }
