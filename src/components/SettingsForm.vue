@@ -1,6 +1,6 @@
 <script setup>
   import { useSettings } from '../stores/settings'
-  import GearIcon from './icons/IconGear.vue'
+  import IconGear from './icons/IconGear.vue'
   import DecimalsInput from './inputs/DecimalsInput.vue'
   import FilePathInput from './inputs/FilePathInput.vue'
   import SelectInput from './inputs/SelectionInput.vue'
@@ -13,7 +13,7 @@
 <template>
   <div class="settings" id="settings">
 
-    <a id="OpenSettingsButton" type="button" data-bs-toggle="modal" data-bs-target="#settingsModal"><GearIcon size="24"/></a>
+    <a id="OpenSettingsButton" type="button" data-bs-toggle="modal" data-bs-target="#settingsModal"><IconGear :size="24" /></a>
 
     <div class="modal fade" id="settingsModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
       <div class="modal-dialog modal-fullscreen">

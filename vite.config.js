@@ -3,14 +3,18 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import VueDevTools from 'vite-plugin-vue-devtools'
-import { viteSingleFile } from "vite-plugin-singlefile"
+import electron from 'vite-plugin-electron/simple'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     VueDevTools(),
-    viteSingleFile({ removeViteModuleLoader: true })
+    electron({
+      main: {
+        entry: "electron/main.js"
+      }
+    })
   ],
   resolve: {
     alias: {
@@ -19,5 +23,6 @@ export default defineConfig({
   },
   build: {
     assetsInlineLimit: 24 * 1024,
-  }
+  },
+  base: './',
 })

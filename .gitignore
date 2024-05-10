@@ -11,6 +11,7 @@ node_modules
 .DS_Store
 dist
 dist-ssr
+dist-electron
 coverage
 *.local
 
@@ -25,10 +26,10 @@ coverage
 *.njsproj
 *.sln
 *.sw?
-
 *.tsbuildinfo
 
 # specific files
 test-results/**/*.flt
 test-results/**/*.hdr
 test-results/**/*tif.aux.xml
+out/

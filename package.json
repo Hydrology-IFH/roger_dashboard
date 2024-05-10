@@ -3,12 +3,20 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "electron/main.js",
+  "author": "Max Schmit",
+  "description": "A dashboard for ROGER model results",
+  "icon": "public/favicon.ico",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && electron-builder",
     "preview": "vite preview",
+    "el-dev": "electron . --trace-warnings",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -30,15 +38,27 @@
     "vue3-plotly": "^0.0.7"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-dmg": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
     "@rushstack/eslint-patch": "^1.3.3",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/eslint-config-prettier": "^8.0.0",
+    "electron": "^30.0.3",
+    "electron-squirrel-startup": "^1.0.0",
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
     "prettier": "^3.0.3",
     "sass": "^1.75.0",
     "vite": "^5.1.6",
-    "vite-plugin-singlefile": "^2.0.1",
+    "vite-plugin-electron": "^0.28.7",
+    "vite-plugin-electron-renderer": "^0.14.5",
     "vite-plugin-vue-devtools": "^7.0.18"
   }
 }

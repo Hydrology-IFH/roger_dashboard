@@ -2,7 +2,7 @@
   import { useSettings } from '../stores/settings'
   import { ref, watchEffect, computed } from 'vue'
   import { VuePlotly } from 'vue3-plotly'
-  import {parse as csvparse} from 'csv-parse/browser/esm/sync';
+  import { parse as csvparse } from 'csv-parse/browser/esm/sync';
 
   const settings = useSettings()
 
