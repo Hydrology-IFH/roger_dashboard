@@ -23,17 +23,12 @@
         :data-bs-title="tooltipMsg">
       {{ name }}
     </span>
-    <!-- <span class="form-control"> -->
-      <select class="form-select form-control" :name="`Select${id}`" :id="`Select${id}`"
-        v-model="sel_var">
-        <option v-for="option in sel_options" :key="option" :value="option" :active="option === sel_var">{{ option }}</option>
-      </select>
-    <!-- </span> -->
+    <select class="form-select form-control" :name="`Select${id}`" :id="`Select${id}`"
+      v-model="sel_var">
+      <option v-for="option in sel_options" :key="option" :value="option" :active="option === sel_var">{{ option }}</option>
+    </select>
   </div>
 </template>
 
 <style scoped>
-  .form-group {
-    max-width: 300px;
-  }
 </style>

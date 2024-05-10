@@ -2,9 +2,11 @@
   import OATimeseriePlot from './components/OATimeseriePlot.vue'
   import OAMapPlot from './components/map/OAMapPlot.vue'
   import SettingsForm from './components/SettingsForm.vue'
+  import SelectControlFile from './components/SelectControlFile.vue'
 </script>
 
 <template>
+  <SelectControlFile />
   <SettingsForm />
   <div class="container-fluid">
     <h1>RoGeR result dashboard</h1>
