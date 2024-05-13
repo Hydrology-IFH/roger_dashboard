@@ -38,7 +38,7 @@
             </ul>
             <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="representation-tab-pane" role="tabpanel" aria-labelledby="representation-tab" tabindex="0">
-                <DecimalsInput v-model="settings.timeseries_decimals" :min=0 :max=6 tooltipMsg="Select the number of decimals to round the data  in the timeseries plot"/>
+                <DecimalsInput v-model="settings.timeseries_decimals" :min=0 :max=6 tooltipMsg="Select the number of decimals to round the data  in the timeseries plot" name="decimals on timeseries plot"/>
               </div>
               <div class="tab-pane fade" id="paths-tab-pane" role="tabpanel" aria-labelledby="paths-tab" tabindex="0">
                 <FilePathInput name="Root RoGeR output folder"
@@ -90,7 +90,8 @@
     color: black;
   }
   a#OpenSettingsButton:hover{
-  opacity: 1;
-  color: var(--bs-primary);
-}
+    opacity: 1;
+    color: var(--bs-primary);
+  }
+
 </style>

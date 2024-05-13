@@ -39,7 +39,10 @@
 </template>
 
 <style scoped>
-  .form-group {
-    max-width: 300px;
+  .form-group input[type="range"] {
+    max-width: 400px;
+  }
+  .form-group{
+    max-width: fit-content;
   }
 </style>

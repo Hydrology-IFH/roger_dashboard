@@ -1,6 +1,6 @@
 <script setup>
   import { useSettings } from '../../stores/settings'
-  import {useMapSettings} from '../../stores/mapSettings'
+  import { useMapSettings } from '../../stores/mapSettings'
   import { ref, watchEffect, onMounted } from 'vue'
   import TileLayer from 'ol/layer/WebGLTile.js';
   import GeoTIFF from 'ol/source/GeoTIFF.js';
