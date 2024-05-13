@@ -44,6 +44,9 @@ function createWindow () {
     }
   })
 
+  // remove the Menu
+  if (!isDev) win.removeMenu()
+
   // start App
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL)

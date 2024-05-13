@@ -1,8 +1,7 @@
 <script setup>
   import { useControlFiles } from '../stores/controlFiles'
   import IconOpen from './icons/IconOpen.vue'
-  import SelectionInput from './inputs/SelectionInput.vue'
-  import {watchEffect} from 'vue'
+  import { watchEffect } from 'vue'
 
   const cf_store = useControlFiles()
   watchEffect(() => {
@@ -29,38 +28,23 @@
 
 <template>
   <div class="SelectControlFile" id="SelectControlFile">
-
-    <a id="OpenSelectControlFileButton" type="button" data-bs-toggle="modal" data-bs-target="#SelectControlFileModal"><IconOpen :size="24" /></a>
-
-    <div class="modal fade" id="SelectControlFileModal" aria-hidden="true" aria-labelledby="SelectControlFileModalLabel" tabindex="-1">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="SelectControlFileModalLabel">Select a RoGeR control file</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form action="none">
-              <input class="form-control" type="file" id="formFile" v-on:change="onNewSelect" hidden>
-              <div class="form-group input-group mb-3">
-                <span class="input-group-text" :id="`label_Select${id}`"
-                    data-bs-toggle="tooltip" data-bs-placement="top"
-                    data-bs-title="Select a RoGeR control file">
-                  Control File
-                </span>
-                <select class="form-select form-control" :name="`Select${id}`" :id="`Select${id}`"
-                  v-model="cf_store.active_control_file">
-                  <option v-for="option in cf_store.last_control_files" :key="option" :value="option" :active="option === cf_store.active_control_file">{{ option }}</option>
-                </select>
-                <button class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Open a new RoGeR control file" v-on:click="onClickOpenSelect">
-                  <IconOpen :size=20 />
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+    <form action="none">
+      <input class="form-control" type="file" id="formFile" v-on:change="onNewSelect" hidden>
+      <div class="form-group input-group mb-3">
+        <span class="input-group-text" :id="`label_Select${id}`"
+            data-bs-toggle="tooltip" data-bs-placement="top"
+            data-bs-title="Select a RoGeR control file">
+          Control File
+        </span>
+        <select class="form-select form-control" :name="`Select${id}`" :id="`Select${id}`"
+          v-model="cf_store.active_control_file">
+          <option v-for="option in cf_store.last_control_files" :key="option" :value="option" :active="option === cf_store.active_control_file">{{ option }}</option>
+        </select>
+        <button class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Open a new RoGeR control file" v-on:click="onClickOpenSelect">
+          <IconOpen :size=20 />
+        </button>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -77,5 +61,9 @@
   a#OpenSelectControlFileButton:hover{
     opacity: 1;
     color: var(--bs-primary);
+  }
+  select{
+    text-overflow: ellipsis;
+    direction: rtl;
   }
 </style>
