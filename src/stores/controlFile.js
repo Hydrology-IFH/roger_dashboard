@@ -6,6 +6,8 @@ export const useControlFile = defineStore({
   state: () => {
     return {
     cf_data: [],
+    output_files: [],
+    out_folder: "",
     do_roger: false,
     do_uhg_oa: false,
     do_uhg_oa_za: false,
@@ -65,89 +67,101 @@ export const useControlFile = defineStore({
   actions: {
     async loadControlFile(path) {
       if (path !== undefined ){
-        window.electron.ipcRenderer.invoke('read-file', path)
-          .then(text => {
-            this.cf_data = csvparse(
-              text,
-              {
-                delimiter: ";",
-                columns: ["name", "value", "col3", "col4", "col5"],
-              }).slice(1)
+        // read the control file
+        let file = await window.electron.ipcRenderer.invoke('read-file', path)
+        if (file !== undefined){
+          this.cf_data = csvparse(
+            file,
+            {
+              delimiter: ";",
+              columns: ["name", "value", "col3", "col4", "col5"],
+            }).slice(1)
 
-            // extract settings from the control file
-            ///////////////////////////////////////////
-            // selected models
-            this.do_roger = /true/.test(this.cf_data[3].value.toLowerCase())
-            this.do_uhg_oa = /true/.test(this.cf_data[4].value.toLowerCase())
-            this.do_uhg_oa_za = /true/.test(this.cf_data[5].value.toLowerCase())
-            this.do_uhg_oa_verlust = /true/.test(this.cf_data[6].value.toLowerCase())
-            this.do_roger_dyn_oa = /true/.test(this.cf_data[7].value.toLowerCase())
-            this.do_roger_dyn_oa_za = /true/.test(this.cf_data[8].value.toLowerCase())
-            this.do_roger_dyn_oa_verlust = /true/.test(this.cf_data[9].value.toLowerCase())
-
-            // event settings
-            this.measurement = /true/.test(this.cf_data[14].value.toLowerCase())
-            this.return_period = parseInt(this.cf_data[15].value)
-            this.duration = parseInt(this.cf_data[16].value)
-            this.pre_sm_perc = parseInt(this.cf_data[17].value)
-            this.n_perc = parseInt(this.cf_data[18].value)
-            this.extrem = /true/.test(this.cf_data[19].value.toLowerCase())
-            this.n_method = /true/.test(this.cf_data[20].value.toLowerCase())
-            this.date = Date.parse(this.cf_data[22].value)
-            this.timestep_minutes = parseInt(this.cf_data[23].value)
-
-            // catchment settings
-            this.model_interz = /true/.test(this.cf_data[28].value.toLowerCase())
-            this.mulde = /true/.test(this.cf_data[29].value.toLowerCase())
-            this.verschlaemt = /true/.test(this.cf_data[30].value.toLowerCase())
-            this.urban_drainage = /true/.test(this.cf_data[31].value.toLowerCase())
-            this.urban_drainage_loss = parseInt(this.cf_data[32].value)
-            this.urban_drainage_sealing = parseInt(this.cf_data[33].value)
-
-            // catchment and river modifications
-            this.roger_dyn_sinks = /true/.test(this.cf_data[36].value.toLowerCase())
-            this.river_from_lanu = /true/.test(this.cf_data[37].value.toLowerCase())
-            this.river_accumulation_value = parseInt(this.cf_data[38].value)
-            this.river_depth = parseInt(this.cf_data[39].value)
-            this.river_width = /true/.test(this.cf_data[40].value)? true: this.cf_data[40].value
-            this.river_baseflow = parseInt(this.cf_data[41].value) ? parseInt(this.cf_data[41].value) : this.cf_data[41].value
-            this.rillen = /true/.test(this.cf_data[42].value.toLowerCase())
-
-            // outputs
-            this.out_catchment = /true/.test(this.cf_data[61].value.toLowerCase())
-            this.out_roger_tau = /true/.test(this.cf_data[62].value.toLowerCase())
-            this.out_roger_t = /true/.test(this.cf_data[63].value.toLowerCase())
-            this.out_dyn = /true/.test(this.cf_data[64].value.toLowerCase())
-            this.out_uhg_oa_flow_times = /true/.test(this.cf_data[65].value.toLowerCase())
-            this.out_uhg_za_flow_times = /true/.test(this.cf_data[66].value.toLowerCase())
-            this.out_roger_dyn_tau = /true/.test(this.cf_data[67].value.toLowerCase())
-            this.out_roger_dyn_t = /true/.test(this.cf_data[68].value.toLowerCase())
-            this.out_roger_dyn_tau_con = /true/.test(this.cf_data[69].value.toLowerCase())
-            this.out_roger_dyn_t_con = /true/.test(this.cf_data[70].value.toLowerCase())
-            this.out_ro_dyn_tau = /true/.test(this.cf_data[71].value.toLowerCase())
-            this.out_ro_dyn_t = /true/.test(this.cf_data[72].value.toLowerCase())
-            this.out_ro_dyn_verlust_tau = /true/.test(this.cf_data[73].value.toLowerCase())
-            this.out_ro_dyn_verlust_t = /true/.test(this.cf_data[74].value.toLowerCase())
-
-            // unit factors
-            this.fact_n = parseInt(this.cf_data[77].value) // mm
-            this.fact_sealing = parseInt(this.cf_data[78].value) // %
-            this.fact_soil_depth = parseInt(this.cf_data[79].value) // cm
-            this.fact_eff_pores = parseInt(this.cf_data[80].value) // mm
-            this.fact_mpl_v = parseInt(this.cf_data[81].value) // cm
-            this.fact_nfk = parseInt(this.cf_data[82].value) // mm
-            this.fact_trrt = parseInt(this.cf_data[83].value) // cm
-            this.fact_nfk_free = parseInt(this.cf_data[84].value) // mm
-            this.fact_drvl = parseInt(this.cf_data[85].value) // mm
-            this.fact_kf = parseInt(this.cf_data[86].value) // mm/h
-            this.fact_tp = parseInt(this.cf_data[87].value) // mm/h
-            this.fact_slope = parseInt(this.cf_data[88].value) // %
+          // extract settings from the control file
+          ///////////////////////////////////////////
+          // output folder and possible files
+          this.out_folder = this.cf_data[1].value.replace(/\\/g, "//")
+          window.electron.ipcRenderer.invoke('list-files', this.out_folder).then((files) => {
+            files = files.filter((file) => file.includes(".csv") || file.includes(".txt") || file.includes(".tif"))
+            console.log(files)
+            this.output_files = files
+          }).catch((err) => {
+            console.log(err)
+            this.output_files = []
           })
-          .catch(err => console.error(err))
+
+          // selected models
+          this.do_roger = /true/.test(this.cf_data[3].value.toLowerCase())
+          this.do_uhg_oa = /true/.test(this.cf_data[4].value.toLowerCase())
+          this.do_uhg_oa_za = /true/.test(this.cf_data[5].value.toLowerCase())
+          this.do_uhg_oa_verlust = /true/.test(this.cf_data[6].value.toLowerCase())
+          this.do_roger_dyn_oa = /true/.test(this.cf_data[7].value.toLowerCase())
+          this.do_roger_dyn_oa_za = /true/.test(this.cf_data[8].value.toLowerCase())
+          this.do_roger_dyn_oa_verlust = /true/.test(this.cf_data[9].value.toLowerCase())
+
+          // event settings
+          this.measurement = /true/.test(this.cf_data[14].value.toLowerCase())
+          this.return_period = parseInt(this.cf_data[15].value)
+          this.duration = parseInt(this.cf_data[16].value)
+          this.pre_sm_perc = parseInt(this.cf_data[17].value)
+          this.n_perc = parseInt(this.cf_data[18].value)
+          this.extrem = /true/.test(this.cf_data[19].value.toLowerCase())
+          this.n_method = /true/.test(this.cf_data[20].value.toLowerCase())
+          this.date = Date.parse(this.cf_data[22].value)
+          this.timestep_minutes = parseInt(this.cf_data[23].value)
+
+          // catchment settings
+          this.model_interz = /true/.test(this.cf_data[28].value.toLowerCase())
+          this.mulde = /true/.test(this.cf_data[29].value.toLowerCase())
+          this.verschlaemt = /true/.test(this.cf_data[30].value.toLowerCase())
+          this.urban_drainage = /true/.test(this.cf_data[31].value.toLowerCase())
+          this.urban_drainage_loss = parseInt(this.cf_data[32].value)
+          this.urban_drainage_sealing = parseInt(this.cf_data[33].value)
+
+          // catchment and river modifications
+          this.roger_dyn_sinks = /true/.test(this.cf_data[36].value.toLowerCase())
+          this.river_from_lanu = /true/.test(this.cf_data[37].value.toLowerCase())
+          this.river_accumulation_value = parseInt(this.cf_data[38].value)
+          this.river_depth = parseInt(this.cf_data[39].value)
+          this.river_width = /true/.test(this.cf_data[40].value)? true: this.cf_data[40].value
+          this.river_baseflow = parseInt(this.cf_data[41].value) ? parseInt(this.cf_data[41].value) : this.cf_data[41].value
+          this.rillen = /true/.test(this.cf_data[42].value.toLowerCase())
+
+          // outputs
+          this.out_catchment = /true/.test(this.cf_data[61].value.toLowerCase())
+          this.out_roger_tau = /true/.test(this.cf_data[62].value.toLowerCase())
+          this.out_roger_t = /true/.test(this.cf_data[63].value.toLowerCase())
+          this.out_dyn = /true/.test(this.cf_data[64].value.toLowerCase())
+          this.out_uhg_oa_flow_times = /true/.test(this.cf_data[65].value.toLowerCase())
+          this.out_uhg_za_flow_times = /true/.test(this.cf_data[66].value.toLowerCase())
+          this.out_roger_dyn_tau = /true/.test(this.cf_data[67].value.toLowerCase())
+          this.out_roger_dyn_t = /true/.test(this.cf_data[68].value.toLowerCase())
+          this.out_roger_dyn_tau_con = /true/.test(this.cf_data[69].value.toLowerCase())
+          this.out_roger_dyn_t_con = /true/.test(this.cf_data[70].value.toLowerCase())
+          this.out_ro_dyn_tau = /true/.test(this.cf_data[71].value.toLowerCase())
+          this.out_ro_dyn_t = /true/.test(this.cf_data[72].value.toLowerCase())
+          this.out_ro_dyn_verlust_tau = /true/.test(this.cf_data[73].value.toLowerCase())
+          this.out_ro_dyn_verlust_t = /true/.test(this.cf_data[74].value.toLowerCase())
+
+          // unit factors
+          this.fact_n = parseInt(this.cf_data[77].value) // mm
+          this.fact_sealing = parseInt(this.cf_data[78].value) // %
+          this.fact_soil_depth = parseInt(this.cf_data[79].value) // cm
+          this.fact_eff_pores = parseInt(this.cf_data[80].value) // mm
+          this.fact_mpl_v = parseInt(this.cf_data[81].value) // cm
+          this.fact_nfk = parseInt(this.cf_data[82].value) // mm
+          this.fact_trrt = parseInt(this.cf_data[83].value) // cm
+          this.fact_nfk_free = parseInt(this.cf_data[84].value) // mm
+          this.fact_drvl = parseInt(this.cf_data[85].value) // mm
+          this.fact_kf = parseInt(this.cf_data[86].value) // mm/h
+          this.fact_tp = parseInt(this.cf_data[87].value) // mm/h
+          this.fact_slope = parseInt(this.cf_data[88].value) // %
+        } else {
+          console.log("Control file could not be read")
         }
       }
     }
   }
-)
+})
 
 

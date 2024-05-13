@@ -74,3 +74,6 @@ app.on('window-all-closed', () => {
 ipcMain.handle('read-file', async (event, filePath) => {
   return fs.promises.readFile(filePath, 'utf8')
 })
+ipcMain.handle('list-files', async (event, dirPath) => {
+  return fs.promises.readdir(dirPath, {recursive: true})
+})
