@@ -35,16 +35,5 @@ export const basemap_sources = {
     }
   }),
   osm: new OSM(),
+  blank: null
 }
-
-
-// export const basemap = new TileLayer({
-//   title: 'Basemap',
-//   source: get_source()
-// });
-
-// export const create_basemap_updater = function(){
-//   form.inst.$watch("basemap", () => {
-//     basemap.setSource(get_source());
-//   });
-// }

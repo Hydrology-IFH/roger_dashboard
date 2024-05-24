@@ -72,8 +72,31 @@ app.on('window-all-closed', () => {
 
 // ipc to return files from the filesystem
 ipcMain.handle('read-file', async (event, filePath) => {
-  return fs.promises.readFile(filePath, 'utf8')
+  if (!filePath) return ''
+  if (await fs.existsSync(filePath)){
+    return fs.promises.readFile(filePath, 'utf8')
+  } else {
+    return "404"
+  }
 })
 ipcMain.handle('list-files', async (event, dirPath) => {
+  if (!dirPath) return ''
+  if (!await fs.existsSync(dirPath)) return "404"
   return fs.promises.readdir(dirPath, {recursive: true})
+})
+ipcMain.handle("list-subdirs", async (event, dirPath) => {
+  if (!dirPath) return ''
+  if (!await fs.existsSync(dirPath)) return "404"
+  return fs.readdirSync(dirPath, { withFileTypes: true })
+    .filter(dir => dir.isDirectory())
+    .map(dir => dir.name)
+})
+ipcMain.handle("get-file", async (event, filePath) => {
+  if (!filePath) return ''
+  try {
+    const data = await fs.readFileSync(filePath);
+    return new Uint8Array(data);
+  } catch (err) {
+    return "404";
+  }
 })

@@ -3,6 +3,7 @@
   import { useControlFile } from '../stores/controlFile'
 
   const controlFile = useControlFile();
+
   const cf_vars = ref([
     "do_roger",
     "do_uhg_oa",

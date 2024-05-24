@@ -1,39 +1,44 @@
 <script setup>
-  // TODO: Der hover funktioniert noch nicht
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, watchEffect } from 'vue';
   import { containsCoordinate } from 'ol/extent.js';
   import Overlay from 'ol/Overlay.js';
-  import { useMapSettings } from '../../../stores/mapSettings'
 
-  const mapSettings = useMapSettings()
+  import { getUnit } from './units.js';
 
   const props = defineProps({
     map: Object,
-    layer: Object,
-    unit: { type: String, default: "mm" }
+    olayer: Object,
+    llayer: Object,
+    // unit: { type: String, default: "mm" },
+    decimals: { type: Number, default: 2}
   })
 
   const hover_div = ref(null)
   const hover_text = ref("")
-  const hover_active = ref(true)
+  const hover_active = ref(false)
+  const unit = ref("")
 
+  // create overlay
   onMounted(() => {
     const overlay = new Overlay({
-          element: hover_div.value,
-          className: 'ov-hover',
-          autoPan: false,
-          positioning: 'bottom-left',
-        });
+      element: hover_div.value,
+      className: 'ov-hover',
+      autoPan: false,
+      positioning: 'bottom-left',
+    });
     props.map.addOverlay(overlay);
-    hover_div.value.style.visibility = 'visible';
+    hover_active.value = true;
 
     // update hover value
     let map_view = props.map.getView();
+
     props.map.on('pointermove', (evt) => {
+      if (props.olayer.getSource() === null) return;
       if (evt.dragging) {
         overlay.setPosition(undefined);
         return;
       }
+      //  check if pointer on map
       let pixel = props.map.getEventPixel(evt.originalEvent);
       let view_extent = map_view.getViewStateAndExtent().extent;
       if (!containsCoordinate(view_extent, evt.coordinate)) {
@@ -41,11 +46,12 @@
         return;
       }
 
-      let pix_value = props.layer.getData(pixel);
+      // update the hover value
+      let pix_value = props.olayer.getData(pixel);
       if ((pix_value != null) && (pix_value[1] != 0)) {
         overlay.setPosition(evt.coordinate);
-        let dec = mapSettings.hover_decimals;
-        hover_text.value = `${Math.round(parseFloat(pix_value[0]) * 10 ** dec) / 10 ** dec} ${props.unit}`;
+        let dec = props.decimals;
+        hover_text.value = `${Math.round(parseFloat(pix_value[0]) * 10 ** dec) / 10 ** dec} ${unit.value}`;
       } else {
         overlay.setPosition(undefined);
       }
@@ -55,8 +61,14 @@
     props.map.getViewport().addEventListener('pointerleave', () => {
       overlay.setPosition(undefined);
     });
-
   });
+
+  watchEffect(() => {
+    if (props.llayer != null) {
+      unit.value = getUnit(props.llayer.name);
+    }
+  })
+
 </script>
 
 <template>
@@ -79,6 +91,5 @@
     margin: 2px;
     box-shadow: 0px 0px 2px 2px rgba(255,255,255,0.62);
     pointer-events: none;
-    visibility: hidden;
   }
 </style>

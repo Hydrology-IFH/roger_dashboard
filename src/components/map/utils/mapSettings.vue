@@ -1,19 +1,18 @@
 <script setup>
-  // TODO: Der hover funktioniert noch nicht
   import { ref, onMounted } from 'vue';
   import Overlay from 'ol-ext/control/Overlay.js';
   import Toggle from 'ol-ext/control/Toggle.js';
 
-  import { useMapSettings } from '../../../stores/mapSettings'
   import SelectInput from '../../inputs/SelectionInput.vue'
   import DecimalsInput from '../../inputs/DecimalsInput.vue'
-
-  const mapSettings = useMapSettings()
+  import LayerSelection from './LayerSelection.vue'
 
   const props = defineProps({
     map: Object,
+    map_settings: Object,
+    layer_lib: Object
   })
-
+  const map_settings = props.map_settings
   const app_div = ref(null)
 
   onMounted(() => {
@@ -25,7 +24,6 @@
     });
     props.map.addControl(overlay);
     app_div.value.style.visibility = 'visible';
-    window.overlay = overlay;
 
     // A toggle control to show/hide the menu
     var t = new Toggle({
@@ -44,13 +42,20 @@
 
 <template>
   <div ref="app_div" class="map-menu-content">
-    <button class="btn btn-close" role="button" onclick=""></button>
-    <h3>Map Menu</h3>
-    <div class="data">
-      <SelectInput name="Basemap" v-model="mapSettings.basemap" :sel_options="['osm', 'basemap_color', 'basemap_grey']" tooltipMsg="The basemap to use in the map"/>
-      <SelectInput name="Colorscale" v-model="mapSettings.colorscale" :sel_options="['inferno', 'viridis', 'plasma', 'magma']" tooltipMsg="The colorscale to use in the map"/>
-      <DecimalsInput v-model="mapSettings.hover_decimals" :min=0 :max=6 tooltipMsg="Select the number of decimals to round the hover label to." name="Hover decimals"/>
-      <DecimalsInput v-model="mapSettings.opacity" :min=0 :max=100 tooltipMsg="Select the opacity of the map" name="Opacity"/>
+    <div class="header">
+      <button class="btn btn-close" role="button" onclick=""></button>
+      <h3>Map Menu</h3>
+    </div>
+    <div class="scrollable">
+      <h4>Layer Selection</h4>
+      <div class="mb-2">
+        <LayerSelection :layer_lib="props.layer_lib" :group_lib="props.layer_lib"/>
+      </div>
+      <h4>Map Settings</h4>
+      <SelectInput name="Basemap" v-model="map_settings.basemap.value" :sel_options="['osm', 'basemap_color', 'basemap_grey', 'blank']" tooltipMsg="The basemap to use in the map"/>
+      <SelectInput name="Colorscale" v-model="map_settings.colorscale.value" :sel_options="['inferno', 'viridis', 'plasma', 'magma']" tooltipMsg="The colorscale to use in the map"/>
+      <DecimalsInput v-model="map_settings.hover_decimals.value" :min=0 :max=6 tooltipMsg="Select the number of decimals to round the hover label to." name="Hover decimals"/>
+      <DecimalsInput v-model="map_settings.opacity.value" :min=0 :max=100 tooltipMsg="Select the opacity of the map" name="Opacity"/>
     </div>
   </div>
 </template>
@@ -66,6 +71,13 @@
   .map-menu-content{
     padding-top: .5em;
     font-size: 0.9em;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .scrollable{
+    overflow-y: auto;
   }
 </style>
 <style>
@@ -76,7 +88,8 @@
   }
   /* main menu window */
   .ol-overlay.map-menu {
-    width: 30%;
+    min-width: 300px;
+    max-width: 50%;
     background: #fff;
     color: #333;
     box-shadow: 0px 0px 5px #000;

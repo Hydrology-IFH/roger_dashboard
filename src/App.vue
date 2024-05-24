@@ -1,6 +1,6 @@
 <script setup>
   import OATimeseriePlot from './components/OATimeseriePlot.vue'
-  import OAMapPlot from './components/map/OAMapPlot.vue'
+  import MapPlot from './components/map/MapPlot.vue'
   import SettingsForm from './components/SettingsForm.vue'
   import SelectControlFile from './components/SelectControlFile.vue'
 </script>
@@ -21,7 +21,7 @@
         <OATimeseriePlot />
       </div>
       <div class="col-lg-7 col-12">
-        <OAMapPlot />
+        <MapPlot />
       </div>
     </div>
   </div>

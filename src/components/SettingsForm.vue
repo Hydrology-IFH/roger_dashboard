@@ -2,7 +2,6 @@
   import { useSettings } from '../stores/settings'
   import IconGear from './icons/IconGear.vue'
   import DecimalsInput from './inputs/DecimalsInput.vue'
-  import FilePathInput from './inputs/FilePathInput.vue'
   import SelectInput from './inputs/SelectionInput.vue'
   import SettingsControlFile from './SettingsControlFile.vue'
 
@@ -27,9 +26,6 @@
                 <button class="nav-link active" id="representation-tab" data-bs-toggle="tab" data-bs-target="#representation-tab-pane" type="button" role="tab" aria-controls="representation-tab-pane" aria-selected="true">Representation</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="paths-tab" data-bs-toggle="tab" data-bs-target="#paths-tab-pane" type="button" role="tab" aria-controls="paths-tab-pane" aria-selected="false">Paths</button>
-              </li>
-              <li class="nav-item" role="presentation">
                 <button class="nav-link" id="map-tab" data-bs-toggle="tab" data-bs-target="#map-tab-pane" type="button" role="tab" aria-controls="map-tab-pane" aria-selected="false">Map Settings</button>
               </li>
               <li class="nav-item" role="presentation">
@@ -39,23 +35,6 @@
             <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="representation-tab-pane" role="tabpanel" aria-labelledby="representation-tab" tabindex="0">
                 <DecimalsInput v-model="settings.timeseries_decimals" :min=0 :max=6 tooltipMsg="Select the number of decimals to round the data  in the timeseries plot" name="decimals on timeseries plot"/>
-              </div>
-              <div class="tab-pane fade" id="paths-tab-pane" role="tabpanel" aria-labelledby="paths-tab" tabindex="0">
-                <FilePathInput name="Root RoGeR output folder"
-                  tooltipMsg="The root output folder (as defined in the control file) of the RoGeR results as a relative path from the curent html file"
-                  v-model="settings.roger_root_out_folder"/>
-                <FilePathInput name="RoGeR control file"
-                  tooltipMsg="The control file of the RoGeR run inside the root output folder"
-                  v-model="settings.roger_control_file_part" v-model:full_path="settings.roger_control_file"/>
-                <FilePathInput name="RoGeR output subfolder"
-                  tooltipMsg="Sub-Path of the RoGeR outputs inside the root folder. Direct to the place where the results are."
-                  v-model="settings.roger_out_folder_part" v-model:full_path="settings.roger_out_folder"/>
-                <FilePathInput name="RoGeR OA time series file"
-                  tooltipMsg="The file containing the time series of the OA and N values"
-                  v-model="settings.roger_oa_ts_file_part" v-model:full_path="settings.roger_oa_ts_file"/>
-                <FilePathInput name="RoGeR total OA GeoTiff file"
-                  tooltipMsg="The GeoTiff file containing the total OA results"
-                  v-model="settings.roger_oa_tiff_file_part" v-model:full_path="settings.roger_oa_tiff_file"/>
               </div>
               <div class="tab-pane fade" id="map-tab-pane" role="tabpanel" aria-labelledby="map-tab" tabindex="0">
                 <p>Select the default map Settings. Those Settings are loaded on App startup.</p>

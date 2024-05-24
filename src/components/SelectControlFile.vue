@@ -2,9 +2,11 @@
   import { useControlFiles } from '../stores/controlFiles'
   import { useControlFile } from '../stores/controlFile'
   import IconOpen from './icons/IconOpen.vue'
-  import { watchEffect } from 'vue'
+  import { watchEffect, ref } from 'vue'
 
   const cfs_stores = useControlFiles()
+  const input_dom = ref(null)
+
   watchEffect(() => {
     if (!cfs_stores.last_control_files.includes(cfs_stores.active_control_file)) {
       cfs_stores.last_control_files.push(cfs_stores.active_control_file)
@@ -20,20 +22,19 @@
   })
 
   function onNewSelect(e) {
-    console.log(e.target.files[0])
     cfs_stores.active_control_file = e.target.files[0].path
   }
   function onClickOpenSelect(e) {
     e.preventDefault()
     e.stopPropagation()
-    document.getElementById('formFile').click()
+    input_dom.value.click()
   }
 </script>
 
 <template>
   <div class="SelectControlFile" id="SelectControlFile">
     <form action="none">
-      <input class="form-control" type="file" id="Select_Control_file_formFile" v-on:change="onNewSelect" hidden>
+      <input class="form-control" type="file" id="Select_Control_file_formFile" v-on:change="onNewSelect" hidden ref="input_dom">
       <div class="form-group input-group mb-3">
         <span class="input-group-text" id="label_Select_Control_file"
             data-bs-toggle="tooltip" data-bs-placement="top"
@@ -42,7 +43,7 @@
         </span>
         <select class="form-select form-control" name="Select_Control_file" id="Select_Control_file"
           v-model="cfs_stores.active_control_file">
-          <option v-for="option in cfs_stores.last_control_files" :key="option" :value="option" :active="option === cfs_stores.active_control_file">{{ option }}</option>
+          <option v-for="option in cfs_stores.last_control_files" :key="option" :value="option" :active="option === cfs_stores.active_control_file">&lrm;{{ option }}</option>
         </select>
         <button class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Open a new RoGeR control file" v-on:click="onClickOpenSelect">
           <IconOpen :size=20 />

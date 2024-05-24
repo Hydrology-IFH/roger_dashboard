@@ -4,7 +4,6 @@ import colormap from 'colormap';
 // helper functions for colorbars
 const get_colorscale = function (min, max, colorbar, continous=true, reverse=false) {
   let values = Array.from({ length: max - min + 1 }, (value, index) => min + index);
-  window.values = values;
   let fact = values.length > 9 ? 1 : 9 / values.length;
   let colors = colormap({
     colormap: colorbar,

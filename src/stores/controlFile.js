@@ -1,77 +1,113 @@
 import { defineStore } from 'pinia'
 import { parse as csvparse } from 'csv-parse/browser/esm/sync';
+const np = window.nodePath
 
 export const useControlFile = defineStore({
   id: 'controlFile',
   state: () => {
     return {
-    cf_data: [],
-    output_files: [],
-    out_folder: "",
-    do_roger: false,
-    do_uhg_oa: false,
-    do_uhg_oa_za: false,
-    do_uhg_oa_verlust: false,
-    do_roger_dyn_oa: false,
-    do_roger_dyn_oa_za: false,
-    do_roger_dyn_oa_verlust: false,
-    measurement: false,
-    return_period: 0,
-    duration: 0,
-    pre_sm_perc: 0,
-    n_perc: 0,
-    extrem: false,
-    n_method: false,
-    date: 0,
-    timestep_minutes: 0,
-    model_interz: false,
-    mulde: false,
-    verschlaemt: false,
-    urban_drainage: false,
-    urban_drainage_loss: 0,
-    urban_drainage_sealing: 0,
-    roger_dyn_sinks: false,
-    river_from_lanu: false,
-    river_accumulation_value: 0,
-    river_depth: 0,
-    river_width: false,
-    river_baseflow: 0,
-    rillen: false,
-    out_catchment: false,
-    out_roger_tau: false,
-    out_roger_t: false,
-    out_dyn: false,
-    out_uhg_oa_flow_times: false,
-    out_uhg_za_flow_times: false,
-    out_roger_dyn_tau: false,
-    out_roger_dyn_t: false,
-    out_roger_dyn_tau_con: false,
-    out_roger_dyn_t_con: false,
-    out_ro_dyn_tau: false,
-    out_ro_dyn_t: false,
-    out_ro_dyn_verlust_tau: false,
-    out_ro_dyn_verlust_t: false,
-    fact_n: 1,
-    fact_sealing: 1,
-    fact_soil_depth: 1,
-    fact_eff_pores: 1,
-    fact_mpl_v: 1,
-    fact_nfk: 1,
-    fact_trrt: 1,
-    fact_nfk_free: 1,
-    fact_drvl: 1,
-    fact_kf: 1,
-    fact_tp: 1,
-    fact_slope: 1}
+      mode: "control_file", // "control_file" or "folder
+      cf_path: "",
+      cf_valid: false,
+      cf_data: [],
+      output_folder: "",
+      output_found: false,
+      output_files: [],
+      do_roger: false,
+      do_uhg_oa: false,
+      do_uhg_oa_za: false,
+      do_uhg_oa_verlust: false,
+      do_roger_dyn_oa: false,
+      do_roger_dyn_oa_za: false,
+      do_roger_dyn_oa_verlust: false,
+      measurement: false,
+      return_period: 0,
+      duration: 0,
+      pre_sm_perc: 0,
+      n_perc: 0,
+      extrem: false,
+      n_method: false,
+      date: 0,
+      timestep_minutes: 0,
+      model_interz: false,
+      mulde: false,
+      verschlaemt: false,
+      urban_drainage: false,
+      urban_drainage_loss: 0,
+      urban_drainage_sealing: 0,
+      roger_dyn_sinks: false,
+      river_from_lanu: false,
+      river_accumulation_value: 0,
+      river_depth: 0,
+      river_width: false,
+      river_baseflow: 0,
+      rillen: false,
+      out_catchment: false,
+      out_roger_tau: false,
+      out_roger_t: false,
+      out_dyn: false,
+      out_uhg_oa_flow_times: false,
+      out_uhg_za_flow_times: false,
+      out_roger_dyn_tau: false,
+      out_roger_dyn_t: false,
+      out_roger_dyn_tau_con: false,
+      out_roger_dyn_t_con: false,
+      out_ro_dyn_tau: false,
+      out_ro_dyn_t: false,
+      out_ro_dyn_verlust_tau: false,
+      out_ro_dyn_verlust_t: false,
+      fact_n: 1,
+      fact_sealing: 1,
+      fact_soil_depth: 1,
+      fact_eff_pores: 1,
+      fact_mpl_v: 1,
+      fact_nfk: 1,
+      fact_trrt: 1,
+      fact_nfk_free: 1,
+      fact_drvl: 1,
+      fact_kf: 1,
+      fact_tp: 1,
+      fact_slope: 1
+    }
   },
   actions: {
-    async loadControlFile(path) {
-      if (path !== undefined ){
+    async loadResultFolder(folder_path, error_callback = () => {}) {
+      // reset all values
+      this.output_files = []
+      this.output_found = false
+
+      // read the output folder
+      let subdirs = await window.electron.ipcRenderer.invoke('list-subdirs', folder_path)
+      if ((subdirs === "404")|| !["RoGeR_", "UHG_", "RoGeR_dyn_"].some((stdir) => subdirs.includes(stdir))){
+        this.output_found = false
+        return error_callback()
+      }
+      window.electron.ipcRenderer.invoke('list-files', folder_path).then((files) => {
+        if (files === "404"){
+          this.output_found = false
+          return
+        }
+        this.output_found = true
+        this.output_files = files.filter((file) => file.includes(".csv") || file.includes(".txt") || file.includes(".tif"))
+        this.output_folder = folder_path
+        console.log(`succesfully loaded ${this.output_folder}`)
+      }).catch((err) => {
+        console.log(err)
+        this.output_found = false
+      })
+    },
+    async loadControlFile(cf_path) {
+      if (cf_path !== undefined ){
+        // reset all values
+        this.$reset()
+
         // read the control file
-        let file = await window.electron.ipcRenderer.invoke('read-file', path)
-        if (file !== undefined){
+        cf_path = np.resolve(cf_path)
+        this.cf_path = cf_path
+        let file_data = await window.electron.ipcRenderer.invoke('read-file', cf_path)
+        if (file_data !== undefined && file_data !== "404"){
           this.cf_data = csvparse(
-            file,
+            file_data,
             {
               delimiter: ";",
               columns: ["name", "value", "col3", "col4", "col5"],
@@ -80,14 +116,10 @@ export const useControlFile = defineStore({
           // extract settings from the control file
           ///////////////////////////////////////////
           // output folder and possible files
-          this.out_folder = this.cf_data[1].value.replace(/\\/g, "//")
-          window.electron.ipcRenderer.invoke('list-files', this.out_folder).then((files) => {
-            files = files.filter((file) => file.includes(".csv") || file.includes(".txt") || file.includes(".tif"))
-            console.log(files)
-            this.output_files = files
-          }).catch((err) => {
-            console.log(err)
-            this.output_files = []
+          this.loadResultFolder(np.resolve(this.cf_data[1].value), () => {
+            console.log("The output folder from the control file could not be found, trying to get the same folder as the control file")
+            this.mode = "folder"
+            this.loadResultFolder(np.dirname(this.cf_path))
           })
 
           // selected models
@@ -156,8 +188,11 @@ export const useControlFile = defineStore({
           this.fact_kf = parseInt(this.cf_data[86].value) // mm/h
           this.fact_tp = parseInt(this.cf_data[87].value) // mm/h
           this.fact_slope = parseInt(this.cf_data[88].value) // %
+
+          this.cf_valid = true
         } else {
           console.log("Control file could not be read")
+          this.cf_valid = false
         }
       }
     }
