@@ -18,7 +18,8 @@ module.exports = {
       name: '@electron-forge/maker-deb',
     },
     {
-      name: '@electron-forge/maker-zip'
+      name: '@electron-forge/maker-zip',
+      platforms: ['darwin'],
     },
     {
       name: '@electron-forge/maker-dmg',
@@ -28,9 +29,33 @@ module.exports = {
     }
   ],
   plugins: [
+    // {
+    //   name: '@electron-forge/plugin-auto-unpack-natives',
+    //   config: {},
+    // },
     {
-      name: '@electron-forge/plugin-auto-unpack-natives',
-      config: {},
+      name: '@electron-forge/plugin-vite',
+      config: {
+        // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
+        // If you are familiar with Vite configuration, it will look really familiar.
+        build: [
+          {
+            // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
+            entry: 'electron/main.mjs',
+            config: 'vite.main.config.mjs',
+          },
+          {
+            entry: 'electron/preload.mjs',
+            config: 'vite.preload.config.mjs',
+          },
+        ],
+        renderer: [
+          {
+            name: 'main_window',
+            config: 'vite.renderer.config.mjs',
+          },
+        ],
+      },
     },
     // Fuses are used to enable/disable various Electron functionality
     // at package time, before code signing the application

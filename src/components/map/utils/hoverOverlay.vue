@@ -3,7 +3,7 @@
   import { containsCoordinate } from 'ol/extent.js';
   import Overlay from 'ol/Overlay.js';
 
-  import { getUnit } from './units.js';
+  import { getUnit } from './units.mjs';
 
   const props = defineProps({
     map: Object,

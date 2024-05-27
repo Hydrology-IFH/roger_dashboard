@@ -1,4 +1,4 @@
-import { Layer, BaseLayer, RangeLayer, splitPath } from './Layer.js';
+import { Layer, BaseLayer, RangeLayer, splitPath } from './Layer.mjs';
 
 const np = window.nodePath;
 
@@ -51,7 +51,7 @@ export class LayerGroup {
     this.unselectAllLayers();
     let layer = undefined;
     if (typeof pathOrLayer == "string"){
-      layer = this.layers.find(layer => {console.log(layer.path, pathOrLayer); return layer.path === pathOrLayer});
+      layer = this.layers.find(layer => layer.path === pathOrLayer);
     } else if (pathOrLayer instanceof BaseLayer){
       layer = pathOrLayer;
     } else {

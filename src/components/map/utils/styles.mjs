@@ -1,4 +1,4 @@
-// import { gridFormPara } from './forms.js';
+// import { gridFormPara } from './forms.mjs';
 import colormap from 'colormap';
 
 // helper functions for colorbars

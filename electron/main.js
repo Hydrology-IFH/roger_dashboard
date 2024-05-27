@@ -1,25 +1,24 @@
-#!/usr/bin/env node
-import { app, BrowserWindow, ipcMain } from 'electron'
-import process from 'process'
-import { dirname } from 'path';
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
-import os from 'node:os';
-import fs from 'node:fs';
+const { app, BrowserWindow } = require('electron');
+const path = require('node:path');
+const os = require('node:os');
+const fs = require('node:fs');
+const { fileURLToPath } = require('node:url');
+const { dirname } = require('node:path');
+const { app, BrowserWindow, ipcMain } = require('electron');
+const process = require('process');
 
-const isDev = ["el-dev", "dev"].includes(process.env.npm_lifecycle_event);
+const isDev = process.env.NODE_ENV === 'development';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 process.env.APP_ROOT = path.join(__dirname, '..')
 
-export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron')
-export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
-export const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL
+const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
+// export const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL
 
-process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
-  ? path.join(process.env.APP_ROOT, 'public')
-  : RENDERER_DIST
+// process.env.VITE_PUBLIC = MAIN_WINDOW_VITE_DEV_SERVER_URL
+//   ? path.join(process.env.APP_ROOT, 'public')
+//   : RENDERER_DIST
 
 // Disable GPU Acceleration for Windows 7
 if (os.release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -32,7 +31,8 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0)
 }
 
-const indexHtml = path.join(RENDERER_DIST, 'index.html')
+const MAIN_WINDOW_VITE_DEV_SERVER_URL = process.env.MAIN_WINDOW_VITE_DEV_SERVER_URL
+
 let win
 
 function createWindow () {
@@ -41,8 +41,7 @@ function createWindow () {
     height: 1100,
     icon: path.join(process.env.APP_ROOT, 'public/favicon.ico'),
     webPreferences: {
-      nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.mjs'),
+      preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true
     }
   })
@@ -51,10 +50,10 @@ function createWindow () {
   if (!isDev) win.removeMenu()
 
   // start App
-  if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL)
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    win.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
   } else {
-    win.loadFile(indexHtml)
+    win.loadFile(path.join(RENDERER_DIST, 'index.html'))
   }
 
   // start devtools

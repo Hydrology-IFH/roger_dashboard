@@ -2,14 +2,17 @@
   "name": "roger_dashboard",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
-  "main": "electron/main.js",
-  "author": "Max Schmit",
+  "main": ".vite/build/main.js",
+  "author": {
+    "name": "Max Schmit",
+    "email": "max.schmit@hydrology.uni-freiburg.de"
+  },
+  "license": "MIT",
   "description": "A dashboard for ROGER model results",
   "icon": "public/favicon.ico",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build && electron-builder",
+    "dev": "electron-forge start",
+    "build": "vite build && electron-forge publish",
     "preview": "vite preview",
     "el-dev": "electron . --trace-warnings",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
@@ -17,6 +20,21 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make"
+  },
+  "build": {
+    "appId": "com.electron.roger_dashboard",
+    "productName": "RoGeR Dashboard",
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*",
+      "index.html",
+      "electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "public/favicon.ico"
+    }
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -46,6 +64,7 @@
     "@electron-forge/maker-zip": "^7.4.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron-forge/plugin-vite": "^7.4.0",
     "@electron/fuses": "^1.8.0",
     "@rushstack/eslint-patch": "^1.3.3",
     "@vitejs/plugin-vue": "^5.0.4",

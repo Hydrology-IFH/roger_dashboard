@@ -191,7 +191,7 @@ export const useControlFile = defineStore({
 
           this.cf_valid = true
         } else {
-          console.log("Control file could not be read")
+          console.log("Control file couldn't be read")
           this.cf_valid = false
         }
       }

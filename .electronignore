@@ -1,0 +1,4 @@
+*.tif
+test-results/
+out/
+dist-electron/

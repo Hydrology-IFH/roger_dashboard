@@ -9,7 +9,7 @@
   import { basemap_sources } from './utils/basemap'
   import hoverOverlay from './utils/hoverOverlay.vue'
   import mapSettingsApp from './utils/mapSettings.vue'
-  import { LayerLibrary } from './utils/layer_library/Library.js'
+  import { LayerLibrary } from './utils/layer_library/Library.mjs'
   import { useSettings } from '../../stores/settings'
   import { useControlFile } from '../../stores/controlFile'
 
