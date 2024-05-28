@@ -29,10 +29,10 @@ module.exports = {
     }
   ],
   plugins: [
-    // {
-    //   name: '@electron-forge/plugin-auto-unpack-natives',
-    //   config: {},
-    // },
+    {
+      name: '@electron-forge/plugin-auto-unpack-natives',
+      config: {},
+    },
     {
       name: '@electron-forge/plugin-vite',
       config: {
@@ -41,19 +41,20 @@ module.exports = {
         build: [
           {
             // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
-            entry: 'electron/main.mjs',
+            entry: 'electron/main.cjs',
             config: 'vite.main.config.mjs',
           },
           {
             entry: 'electron/preload.mjs',
             config: 'vite.preload.config.mjs',
           },
+
         ],
         renderer: [
           {
             name: 'main_window',
             config: 'vite.renderer.config.mjs',
-          },
+          }
         ],
       },
     },

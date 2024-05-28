@@ -12,9 +12,8 @@
   "icon": "public/favicon.ico",
   "scripts": {
     "dev": "electron-forge start",
-    "build": "vite build && electron-forge publish",
+    "build": "vite build && electron-forge make",
     "preview": "vite preview",
-    "el-dev": "electron . --trace-warnings",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "start": "electron-forge start",

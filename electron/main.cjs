@@ -1,10 +1,9 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 const os = require('node:os');
 const fs = require('node:fs');
 const { fileURLToPath } = require('node:url');
 const { dirname } = require('node:path');
-const { app, BrowserWindow, ipcMain } = require('electron');
 const process = require('process');
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -13,12 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 process.env.APP_ROOT = path.join(__dirname, '..')
 
-const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
-// export const VITE_DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL
-
-// process.env.VITE_PUBLIC = MAIN_WINDOW_VITE_DEV_SERVER_URL
-//   ? path.join(process.env.APP_ROOT, 'public')
-//   : RENDERER_DIST
+const RENDERER_DIST = '.vite/renderer/main_window'
 
 // Disable GPU Acceleration for Windows 7
 if (os.release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -42,7 +36,7 @@ function createWindow () {
     icon: path.join(process.env.APP_ROOT, 'public/favicon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true
+      nodeIntegration: true,
     }
   })
 

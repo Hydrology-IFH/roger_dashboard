@@ -33,3 +33,4 @@ test-results/**/*.flt
 test-results/**/*.hdr
 test-results/**/*tif.aux.xml
 out/
+.vite/

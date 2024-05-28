@@ -1,6 +1,5 @@
-const { contextBridge, ipcRenderer } = require('electron');
-const path = require('node:path');
-
+const path = require('path');
+import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld(
   'electron',
