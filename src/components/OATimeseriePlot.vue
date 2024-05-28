@@ -1,10 +1,16 @@
 <script setup>
-  import { useSettings } from '../stores/settings'
   import { ref, watchEffect, computed } from 'vue'
   import { VuePlotly } from 'vue3-plotly'
   import { parse as csvparse } from 'csv-parse/browser/esm/sync';
 
+  import { useSettings } from '../stores/settings'
+  import { useControlFile } from '../stores/controlFile'
+  import ErrorFrame from './utils/ErrorFrame.vue'
+
   const settings = useSettings()
+  const control_file = useControlFile()
+  window.control_file = control_file
+  const FILEPATH = "/RoGeR_/Ergebnisse/OA_zeitlich.csv"
 
   // load data from file
   const oa_ts_data = ref({
@@ -13,8 +19,10 @@
     timestep: []
   })
   watchEffect(async () => {
-    let dec = settings.timeseries_decimals
-    fetch(settings.roger_oa_ts_file)
+    let oa_file = window.nodePath.join(control_file.output_folder, FILEPATH);
+    if (control_file.output_files.includes(oa_file)) {
+      let dec = settings.timeseries_decimals
+      fetch(oa_file)
       .then(response => response.text())
       .catch(err => console.error(err))
       .then(text => {
@@ -26,6 +34,8 @@
         }
       })
       .catch(err => console.error(err))
+    }
+
   })
 
   // plotly setup
@@ -65,7 +75,8 @@
 
 <template>
   <div class="plot" id="oa-plot">
-    <VuePlotly :data :layout/>
+    <VuePlotly :data :layout v-if="oa_ts_data.N.length>0"/>
+    <ErrorFrame v-else :msg="`I couldn't find an OA timeseries file (${FILEPATH}) in the output folder`" header="No OA data" type="dark"/>
   </div>
 </template>
 
