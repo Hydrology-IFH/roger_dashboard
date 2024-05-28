@@ -1,14 +1,16 @@
 <script setup>
+  import { watchEffect, ref } from 'vue'
+
   import { useControlFiles } from '../stores/controlFiles'
   import { useControlFile } from '../stores/controlFile'
   import IconOpen from './icons/IconOpen.vue'
-  import { watchEffect, ref } from 'vue'
 
   const cfs_stores = useControlFiles()
   const input_dom = ref(null)
   window.cfs_stores = cfs_stores
 
   const cf_store = useControlFile()
+  window.cf_store = cf_store
   watchEffect(() => {
     if (cfs_stores.active_control_file) {
       cf_store.loadControlFile(cfs_stores.active_control_file.file)

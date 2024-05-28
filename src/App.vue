@@ -25,8 +25,12 @@
       </div>
     </div>
   </div>
+  <notifications position="bottom right" :duration="10000" max="5" pauseOnHover="true"/>
 </template>
 
-<style scoped>
-
+<style>
+  .vue-notification .notification-content{
+    font-size: 1rem;
+    overflow-wrap: break-word;
+  }
 </style>
