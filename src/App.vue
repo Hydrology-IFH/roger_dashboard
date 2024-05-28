@@ -25,7 +25,7 @@
       </div>
     </div>
   </div>
-  <notifications position="bottom right" :duration="10000" max="5" pauseOnHover="true"/>
+  <notifications position="bottom right" :duration="10000" :max="5" :pauseOnHover="true"/>
 </template>
 
 <style>

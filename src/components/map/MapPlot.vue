@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, watchEffect, onMounted, watch } from 'vue'
+  import { ref, watchEffect, onMounted } from 'vue'
   import TileLayer from 'ol/layer/WebGLTile.js';
   import GeoTIFF from 'ol/source/GeoTIFF.js';
   import { Map, View } from 'ol';
@@ -100,7 +100,7 @@
     }
     try {
       const tif_resp = await window.electron.ipcRenderer
-        .invoke("get-file", window.nodePath.join(controlFile.output_folder, layer_obj.path))
+        .invoke("get-file-blob", window.nodePath.join(controlFile.output_folder, layer_obj.path))
       if (tif_resp == null || tif_resp == "404") {
         return
       }

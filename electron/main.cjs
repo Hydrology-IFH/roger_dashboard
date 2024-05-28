@@ -84,11 +84,19 @@ ipcMain.handle("list-subdirs", async (event, dirPath) => {
     .filter(dir => dir.isDirectory())
     .map(dir => dir.name)
 })
-ipcMain.handle("get-file", async (event, filePath) => {
+ipcMain.handle("get-file-blob", async (event, filePath) => {
   if (!filePath) return ''
   try {
     const data = await fs.readFileSync(filePath);
     return new Uint8Array(data);
+  } catch (err) {
+    return "404";
+  }
+})
+ipcMain.handle("get-file-text", async (event, filePath) => {
+  if (!filePath) return ''
+  try {
+    return await fs.readFileSync(filePath, "utf8");
   } catch (err) {
     return "404";
   }

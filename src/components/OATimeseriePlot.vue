@@ -10,7 +10,7 @@
   const settings = useSettings()
   const control_file = useControlFile()
   window.control_file = control_file
-  const FILEPATH = "/RoGeR_/Ergebnisse/OA_zeitlich.csv"
+  const FILEPATH = "RoGeR_\\Ergebnisse\\OA_zeitlich.csv"
 
   // load data from file
   const oa_ts_data = ref({
@@ -20,20 +20,27 @@
   })
   watchEffect(async () => {
     let oa_file = window.nodePath.join(control_file.output_folder, FILEPATH);
-    if (control_file.output_files.includes(oa_file)) {
+    if (control_file.output_files.includes(FILEPATH)) {
       let dec = settings.timeseries_decimals
-      fetch(oa_file)
-      .then(response => response.text())
-      .catch(err => console.error(err))
-      .then(text => {
+      window.electron.ipcRenderer.invoke("get-file-text", oa_file)
+        .catch(err => console.error(err))
+        .then(text => {
+        console.log(text)
         let csv_data = csvparse(text, { delimiter: ";", columns: true })
         oa_ts_data.value = {
           N: csv_data.map((data) => Math.round(parseFloat(data["N(mm)"])*10**dec)/10**dec),
           OA: csv_data.map((data) => Math.round(parseFloat(data["OA(mm)"])*10**dec)/10**dec),
           timestep: Array.from(csv_data, (v,i)=>i+1)
         }
+        console.log(oa_ts_data.value)
       })
       .catch(err => console.error(err))
+    } else {
+      oa_ts_data.value = {
+        N: [],
+        OA: [],
+        timestep: []
+      }
     }
 
   })

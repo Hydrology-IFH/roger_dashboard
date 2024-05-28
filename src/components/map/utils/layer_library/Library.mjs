@@ -79,6 +79,14 @@ export class LayerGroup {
     this.layers.forEach(layer => layer.selected = false);
     this.groups.forEach(group => group.unselectAllLayers());
   }
+
+  selectFirstLayer(){
+    if (this.layers.length > 0){
+      return this.selectLayer(this.layers[0]);
+    } else {
+      return this.groups.forEach(group => group.selectFirstLayer());
+    }
+  }
 }
 
 // LayerLibrary is the main Library class for all layers
@@ -100,14 +108,6 @@ export class LayerLibrary extends LayerGroup {
       this.selectLayer(this.lastSelectedLayer.path);
     } else {
       this.selectFirstLayer();
-    }
-  }
-
-  selectFirstLayer(){
-    if (this.layers.length > 0){
-      return this.selectLayer(this.layers[0]);
-    } else {
-      return this.groups.forEach(group => group.selectFirstLayer());
     }
   }
 
