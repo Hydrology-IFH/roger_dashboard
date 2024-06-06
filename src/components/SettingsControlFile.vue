@@ -1,6 +1,6 @@
 <script setup>
-  import { ref } from 'vue'
-  import { useControlFile } from '../stores/controlFile'
+  import { ref } from 'vue';
+  import { useControlFile } from '../stores/controlFile';
 
   const controlFile = useControlFile();
 

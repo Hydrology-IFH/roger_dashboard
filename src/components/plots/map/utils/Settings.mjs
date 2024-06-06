@@ -1,4 +1,4 @@
-import { useSettings } from '../../../stores/settings';
+import { useSettings } from '~/stores/settings';
 import { ref } from 'vue';
 
 export class Settings {

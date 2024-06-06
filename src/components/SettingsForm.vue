@@ -1,16 +1,59 @@
 <script setup>
-  import { useSettings } from '../stores/settings'
-  import IconGear from './icons/IconGear.vue'
+  import { ref, onMounted } from 'vue'
+  import { Tooltip } from 'bootstrap'
+  import { useNotification } from "@kyvg/vue3-notification";
+
+  import { useSettings } from '~/stores/settings'
+  import { usePlotsLayout, usePlotsLayoutDefault } from '~/stores/plotsLayout'
   import DecimalsInput from './inputs/DecimalsInput.vue'
   import SelectInput from './inputs/SelectionInput.vue'
   import SettingsControlFile from './SettingsControlFile.vue'
 
   const settings = useSettings()
+  const layoutStore = usePlotsLayout()
+  const layoutStoreDefault = usePlotsLayoutDefault()
+  const {notify} = useNotification()
+
+  // Tooltips
+  const btn_dom = ref(null)
+  const btnSavePlotLayout = ref(null)
+  const btnResetPlotLayout = ref(null)
+  const spanPlotLayout = ref(null)
+  onMounted(() => {
+    let opts = {
+      delay: { show: 500, hide: 150 },
+      placement: 'top'
+    }
+    new Tooltip(btn_dom.value, opts)
+    new Tooltip(spanPlotLayout.value, opts)
+    new Tooltip(btnSavePlotLayout.value, opts)
+    new Tooltip(btnResetPlotLayout.value, opts)
+  })
+
+  // plotView functions
+  function savePlotLayout() {
+    layoutStoreDefault.layout = layoutStore.layout
+    notify({
+      type: "success",
+      title: "Default plot layout saved",
+      text: "The actual view got saved as default"
+    })
+  }
+  function resetPlotLayout() {
+    localStorage.removeItem("plots_layout_defaults")
+    notify({
+      type: "success",
+      title: "Default plot layout reset",
+      text: "The default plot layout got reset to the initial value"
+    })
+  }
 
 </script>
 
 <template>
-  <a id="OpenSettingsButton" type="button" data-bs-toggle="modal" data-bs-target="#settingsModal"><IconGear :size=24 /></a>
+  <a id="OpenSettingsButton" type="button" data-bs-toggle="modal" data-bs-target="#settingsModal">
+    <i class="bi bi-gear" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Settings" ref="btn_dom"></i>
+  </a>
 
   <div class="modal fade" id="settingsModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
     <div class="modal-dialog modal-fullscreen">
@@ -34,6 +77,24 @@
             </ul>
             <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="representation-tab-pane" role="tabpanel" aria-labelledby="representation-tab" tabindex="0">
+                <p>Select the default representation Settings. Those Settings are loaded on App startup.</p>
+
+                <div class="input-group mb-3">
+                  <span class="input-group-text" id="label_PlotLayout" ref="spanPlotLayout"
+                        data-bs-toggle="tooltip"
+                        data-bs-title="reset or save the actual default plot layout; The plots, theire position and size at startup.">
+                    default plot layout
+                  </span>
+                  <button class="btn btn-primary" ref="btnSavePlotLayout" @click.prevent="savePlotLayout"
+                          data-bs-toggle="tooltip" data-bs-title="save the actual view as default">
+                      <i class="bi bi-floppy" ></i> Save
+                  </button>
+                  <button class="btn btn-outline-primary" ref="btnResetPlotLayout" @click.prevent="resetPlotLayout"
+                          data-bs-toggle="tooltip" data-bs-title="reset the default plot layout to the default value">
+                    <i class="bi bi-arrow-clockwise" ></i> Reset
+                  </button>
+                </div>
+
                 <DecimalsInput v-model="settings.timeseries_decimals" :min=0 :max=6 tooltipMsg="Select the number of decimals to round the data  in the timeseries plot" name="decimals on timeseries plot"/>
               </div>
               <div class="tab-pane fade" id="map-tab-pane" role="tabpanel" aria-labelledby="map-tab" tabindex="0">
@@ -65,8 +126,8 @@
   a#OpenSettingsButton {
     float: right;
     margin-left: 1rem;
-    margin-top: 4px;
     color: black;
+    font-size: x-large;
   }
   a#OpenSettingsButton:hover{
     opacity: 1;

@@ -1,5 +1,5 @@
 <script setup>
-  import { onMounted } from 'vue'
+  import { onMounted, ref } from 'vue'
   import { Tooltip } from 'bootstrap';
 
   const sel_var = defineModel({ required: true })
@@ -9,17 +9,18 @@
     tooltipMsg: String
   })
   const id = props.name.replace(/\s/g, '_')
+  const label_dom = ref(null)
 
   onMounted(() => {
-    document.querySelectorAll('[data-bs-toggle="tooltip"]')
-      .forEach((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl))
+    new Tooltip(label_dom.value)
   })
 </script>
 
 <template>
   <div class="form-group input-group mb-3">
     <span class="input-group-text" :id="`label_Select${id}`"
-    data-bs-toggle="tooltip" data-bs-placement="top"
+        ref="label_dom"
+        data-bs-toggle="tooltip" data-bs-placement="top"
         :data-bs-title="tooltipMsg">
       {{ name }}
     </span>

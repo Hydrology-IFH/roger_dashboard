@@ -1,5 +1,6 @@
 <script setup>
-  import { watchEffect, ref } from 'vue'
+  import { watchEffect, ref, onMounted } from 'vue'
+  import { Tooltip } from 'bootstrap'
 
   import { useControlFiles } from '../stores/controlFiles'
   import { useControlFile } from '../stores/controlFile'
@@ -7,22 +8,27 @@
 
   const cfs_stores = useControlFiles()
   const input_dom = ref(null)
-  window.cfs_stores = cfs_stores
+  const select_dom = ref(null)
+  const btn_dom = ref(null)
+  let btn_tooltip = null
 
   const cf_store = useControlFile()
-  window.cf_store = cf_store
   watchEffect(() => {
     if (cfs_stores.active_control_file) {
       cf_store.loadControlFile(cfs_stores.active_control_file.file)
     }
   })
-
-  function onNewSelect(e) {
-    cfs_stores.selectControlFile(e.target.files[0].path)
-  }
+  onMounted(() => {
+    let opts = {
+      delay: { show: 500, hide: 150 },
+      placement: 'bottom'
+    }
+    new Tooltip(select_dom.value, opts)
+    btn_tooltip = new Tooltip(btn_dom.value, opts)
+  })
   function onClickOpenSelect(e) {
     e.preventDefault()
-    e.stopPropagation()
+    btn_tooltip.hide()
     input_dom.value.click()
   }
 </script>
@@ -32,17 +38,20 @@
     <form action="none">
       <input class="form-control" type="file" id="Select_Control_file_formFile" v-on:change="onNewSelect" hidden ref="input_dom">
       <div class="form-group input-group mb-3">
-        <span class="input-group-text" id="label_Select_Control_file"
-            data-bs-toggle="tooltip" data-bs-placement="top"
-            data-bs-title="Select a RoGeR control file">
+        <span class="input-group-text" id="label_Select_Control_file">
           Control File
         </span>
-        <select class="form-select form-control" name="Select_Control_file" id="Select_Control_file"
+        <select class="form-select form-control" name="Select_Control_file" id="Select_Control_file" ref="select_dom"
+          data-bs-toggle="tooltip" data-bs-title="Select one of the previously selected RoGeR control files"
           v-model="cfs_stores.active_control_file" v-if="cfs_stores.last_control_files.length>0">
-          <option v-for="cf in cfs_stores.last_control_files" :key="cf.file" :value="cf" :active="cf === cfs_stores.active_control_file">&lrm;{{ cf.file }}</option>
+          <option v-for="cf in cfs_stores.last_control_files" :key="cf.file" :value="cf" :active="cf === cfs_stores.active_control_file">
+            &lrm;{{ cf.file }}
+          </option>
         </select>
         <span class="form-select form-control" v-else>No control file selected</span>
-        <button class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Open a new RoGeR control file" v-on:click="onClickOpenSelect">
+        <button class="input-group-text" ref="btn_dom"
+          data-bs-toggle="tooltip" data-bs-title="Open a new RoGeR control file"
+          v-on:click="onClickOpenSelect">
           <IconOpen :size=20 />
         </button>
       </div>

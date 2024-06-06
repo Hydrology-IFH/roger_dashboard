@@ -3,8 +3,8 @@
   import { VuePlotly } from 'vue3-plotly'
   import { parse as csvparse } from 'csv-parse/browser/esm/sync';
 
-  import { useSettings } from '../stores/settings'
-  import { useControlFile } from '../stores/controlFile'
+  import { useSettings } from '../../stores/settings'
+  import { useControlFile } from '../../stores/controlFile'
   import ErrorFrame from './utils/ErrorFrame.vue'
 
   const settings = useSettings()
@@ -25,14 +25,12 @@
       window.electron.ipcRenderer.invoke("get-file-text", oa_file)
         .catch(err => console.error(err))
         .then(text => {
-        console.log(text)
         let csv_data = csvparse(text, { delimiter: ";", columns: true })
         oa_ts_data.value = {
           N: csv_data.map((data) => Math.round(parseFloat(data["N(mm)"])*10**dec)/10**dec),
           OA: csv_data.map((data) => Math.round(parseFloat(data["OA(mm)"])*10**dec)/10**dec),
           timestep: Array.from(csv_data, (v,i)=>i+1)
         }
-        console.log(oa_ts_data.value)
       })
       .catch(err => console.error(err))
     } else {
@@ -81,17 +79,15 @@
 </script>
 
 <template>
-  <div class="plot" id="oa-plot">
-    <VuePlotly :data :layout v-if="oa_ts_data.N.length>0"/>
-    <ErrorFrame v-else :msg="`I couldn't find an OA timeseries file (${FILEPATH}) in the output folder`" header="No OA data" type="dark"/>
+  <div class="plot" id="oa-plot" v-if="oa_ts_data.N.length>0">
+    <VuePlotly :data :layout />
   </div>
+  <ErrorFrame v-else :msg="`I couldn't find an OA timeseries file (${FILEPATH}) in the output folder`" header="No OA data" type="dark"/>
 </template>
 
 <style scoped>
   .plot {
     width: 100%;
     height: 100%;
-    min-width: 400px;
-    min-height: 400px;
   }
 </style>

@@ -10,8 +10,8 @@
   import hoverOverlay from './utils/hoverOverlay.vue'
   import mapSettingsApp from './utils/mapSettings.vue'
   import { LayerLibrary } from './utils/layer_library/Library.mjs'
-  import { useSettings } from '../../stores/settings'
-  import { useControlFile } from '../../stores/controlFile'
+  import { useSettings } from '~/stores/settings'
+  import { useControlFile } from '~/stores/controlFile'
 
   // define variables
   const settings = new useSettings()
@@ -150,13 +150,13 @@
 <style scoped>
   .plot {
     width: 100%;
-    min-width: 400px;
-    height: calc(100vh - 6rem);
+    height: 100%;
   }
 </style>
 <style>
   .ol-zoom {
     left: auto!important;
     right: 0.5em!important;
+    top: 2.5em;
   }
 </style>

@@ -25,6 +25,9 @@ export default defineConfig((env) => {
     ],
     resolve: {
       preserveSymlinks: true,
+      alias: {
+        "~": `${root}/src/`
+      }
     },
     clearScreen: false,
   };

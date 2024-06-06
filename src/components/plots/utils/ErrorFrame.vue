@@ -19,3 +19,13 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  .ErrorFrame {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 1em;
+  }
+</style>

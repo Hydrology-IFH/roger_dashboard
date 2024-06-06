@@ -3,8 +3,8 @@
   import Overlay from 'ol-ext/control/Overlay.js';
   import Toggle from 'ol-ext/control/Toggle.js';
 
-  import SelectInput from '../../inputs/SelectionInput.vue'
-  import DecimalsInput from '../../inputs/DecimalsInput.vue'
+  import SelectInput from '~/components/inputs/SelectionInput.vue'
+  import DecimalsInput from '~/components/inputs/DecimalsInput.vue'
   import LayerSelection from './LayerSelection.vue'
 
   const props = defineProps({
@@ -64,12 +64,13 @@
   /* style the close box */
   .map-menu-content .btn-close {
     position: absolute;
-    right: 1em;
-    top: 1em;
+    right: 0.5em;
+    top: 0em;
     left: auto;
   }
   .map-menu-content{
-    padding-top: .5em;
+    position: absolute;
+    padding-top: 0em;
     font-size: 0.9em;
     max-height: 100%;
     display: flex;
@@ -78,6 +79,12 @@
   }
   .scrollable{
     overflow-y: auto;
+  }
+  .header{
+    position: sticky;
+    width: 100%;
+    height: fit-content;
+    padding-top: 0;
   }
 </style>
 <style>
