@@ -6,6 +6,7 @@
   import SelectInput from '~/components/inputs/SelectionInput.vue'
   import DecimalsInput from '~/components/inputs/DecimalsInput.vue'
   import LayerSelection from './LayerSelection.vue'
+  import SwitchInput from '~/components/inputs/SwitchInput.vue'
 
   const props = defineProps({
     map: Object,
@@ -54,6 +55,7 @@
       <h4>Map Settings</h4>
       <SelectInput name="Basemap" v-model="map_settings.basemap.value" :sel_options="['osm', 'basemap_color', 'basemap_grey', 'blank']" tooltipMsg="The basemap to use in the map"/>
       <SelectInput name="Colorscale" v-model="map_settings.colorscale.value" :sel_options="['inferno', 'viridis', 'plasma', 'magma']" tooltipMsg="The colorscale to use in the map"/>
+      <SwitchInput name="reverse the Colorscale" v-model="map_settings.colorscale_reverse.value" tooltipMsg="Should the colorscale be reversed"/>
       <DecimalsInput v-model="map_settings.hover_decimals.value" :min=0 :max=6 tooltipMsg="Select the number of decimals to round the hover label to." name="Hover decimals"/>
       <DecimalsInput v-model="map_settings.opacity.value" :min=0 :max=100 tooltipMsg="Select the opacity of the map" name="Opacity"/>
     </div>
@@ -64,13 +66,14 @@
   /* style the close box */
   .map-menu-content .btn-close {
     position: absolute;
-    right: 0.5em;
+    right: 0em;
     top: 0em;
     left: auto;
   }
   .map-menu-content{
     position: absolute;
     padding-top: 0em;
+    padding-right: 0.5em;
     font-size: 0.9em;
     max-height: 100%;
     display: flex;

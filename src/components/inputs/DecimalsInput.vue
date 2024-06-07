@@ -44,6 +44,6 @@
     max-width: 400px;
   }
   .form-group{
-    max-width: fit-content;
+    max-width: 400px;
   }
 </style>

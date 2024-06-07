@@ -8,6 +8,7 @@
   import DecimalsInput from './inputs/DecimalsInput.vue'
   import SelectInput from './inputs/SelectionInput.vue'
   import SettingsControlFile from './SettingsControlFile.vue'
+  import SwitchInput from './inputs/SwitchInput.vue'
 
   const settings = useSettings()
   const layoutStore = usePlotsLayout()
@@ -99,8 +100,9 @@
               </div>
               <div class="tab-pane fade" id="map-tab-pane" role="tabpanel" aria-labelledby="map-tab" tabindex="0">
                 <p>Select the default map Settings. Those Settings are loaded on App startup.</p>
-                <SelectInput name="Basemap" v-model="settings.map_default_basemap" :sel_options="['osm', 'basemap_color', 'basemap_grey']" tooltipMsg="The default basemap to use in the map"/>
+                <SelectInput name="Basemap" v-model="settings.map_default_basemap" :sel_options="['osm', 'basemap_color', 'basemap_grey', 'blank']" tooltipMsg="The default basemap to use in the map"/>
                 <SelectInput name="Colorscale" v-model="settings.map_default_colorscale" :sel_options="['inferno', 'viridis', 'plasma', 'magma']" tooltipMsg="The default colorscale to use in the map"/>
+                <SwitchInput name="reverse the Colorscale" v-model="settings.map_default_colorscale_reverse" tooltipMsg="Should the colorscale be reversed by default"/>
                 <DecimalsInput v-model="settings.map_default_hover_decimals" :min=0 :max=6
                   name="Hover decimals"
                   tooltipMsg="Select the default number of decimals to round the hover label to."/>

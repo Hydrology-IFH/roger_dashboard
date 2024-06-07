@@ -2,6 +2,7 @@
   import { ref, watchEffect, onMounted } from 'vue'
   import TileLayer from 'ol/layer/WebGLTile.js';
   import GeoTIFF from 'ol/source/GeoTIFF.js';
+  import { fromArrayBuffer, fromBlob } from "geotiff";
   import { Map, View } from 'ol';
   import { buffer } from 'ol/extent';
 
@@ -24,9 +25,10 @@
     opacity: ref(settings.map_default_opacity),
     hover_decimals: ref(settings.map_default_hover_decimals),
     basemap: ref(settings.map_default_basemap),
-    colorscale: ref(settings.map_default_colorscale)
+    colorscale: ref(settings.map_default_colorscale),
+    colorscale_reverse: ref(settings.map_default_colorscale_reverse),
   }
-  const id = ref(0)
+  const tif_range = ref([0, 15])
 
   // load data from file
   const olayer = new TileLayer()
@@ -81,7 +83,14 @@
   })
   // colorscale
   watchEffect(() => {
-    olayer.setStyle(get_colorscale_tileLayer_style(0, 10, map_settings.colorscale.value, true))
+    olayer.setStyle(
+      get_colorscale_tileLayer_style(
+        tif_range.value[0],
+        tif_range.value[1],
+        map_settings.colorscale.value,
+        true,
+        map_settings.colorscale_reverse.value)
+    )
   })
   // opacity
   watchEffect(() => {
@@ -104,7 +113,17 @@
       if (tif_resp == null || tif_resp == "404") {
         return
       }
-      const tif_blob = new Blob([tif_resp.buffer], {type: 'image/tiff'})
+      const tif_blob = new Blob([tif_resp.buffer], { type: 'image/tiff' })
+      //  get min max values
+      fromBlob(tif_blob)
+        .then(tif => tif.getImage())
+        .then(img => img.readRasters())
+        .then(rasters => {
+          tif_range.value = [Math.min(...rasters[0]), Math.max(...rasters[0])]
+        })
+        .catch(err => console.error(err))
+
+      // set source
       olayer.setSource(new GeoTIFF({
         sources: [
           {

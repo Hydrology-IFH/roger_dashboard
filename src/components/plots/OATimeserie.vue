@@ -9,7 +9,6 @@
 
   const settings = useSettings()
   const control_file = useControlFile()
-  window.control_file = control_file
   const FILEPATH = "RoGeR_\\Ergebnisse\\OA_zeitlich.csv"
 
   // load data from file

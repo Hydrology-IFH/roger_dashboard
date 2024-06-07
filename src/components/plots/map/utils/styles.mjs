@@ -1,10 +1,20 @@
 // import { gridFormPara } from './forms.mjs';
 import colormap from 'colormap';
 
+const MIN_STEPS = 9;
+const MAX_STEPS = 40;
 // helper functions for colorbars
 const get_colorscale = function (min, max, colorbar, continous=true, reverse=false) {
-  let values = Array.from({ length: max - min + 1 }, (value, index) => min + index);
-  let fact = values.length > 9 ? 1 : 9 / values.length;
+  let length = max - min + 1;
+  let step = 1;
+  let fact = 1;
+  if (length > MAX_STEPS){
+    step = Math.floor(length / MAX_STEPS);
+    length = Math.ceil(length / step);
+  } else if (length < MIN_STEPS) {
+    fact = MIN_STEPS / length;
+  }
+  let values = Array.from({ length:length }, (value, index) => min + index * step);
   let colors = colormap({
     colormap: colorbar,
     nshades: fact == 1? values.length:9, // duplicat as some colormaps need at least 9 nshades

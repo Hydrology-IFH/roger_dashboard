@@ -11,6 +11,7 @@ export const useSettings = defineStore(
 
     const map_default_basemap = ref("basemap_color")
     const map_default_colorscale = ref("inferno")
+    const map_default_colorscale_reverse = ref(false)
     const map_default_opacity = ref(100)
     const map_default_hover_decimals = ref(3)
 
