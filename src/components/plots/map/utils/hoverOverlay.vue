@@ -1,22 +1,19 @@
 <script setup>
-  import { ref, onMounted, watchEffect } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { containsCoordinate } from 'ol/extent.js';
   import Overlay from 'ol/Overlay.js';
-
-  import { getUnit } from './units.mjs';
 
   const props = defineProps({
     map: Object,
     olayer: Object,
     llayer: Object,
-    // unit: { type: String, default: "mm" },
+    unit: { type: String, default: "mm" },
     decimals: { type: Number, default: 2}
   })
 
   const hover_div = ref(null)
   const hover_text = ref("")
   const hover_active = ref(false)
-  const unit = ref("")
 
   // create overlay
   onMounted(() => {
@@ -51,7 +48,7 @@
       if ((pix_value != null) && (pix_value[1] != 0)) {
         overlay.setPosition(evt.coordinate);
         let dec = props.decimals;
-        hover_text.value = `${Math.round(parseFloat(pix_value[0]) * 10 ** dec) / 10 ** dec} ${unit.value}`;
+        hover_text.value = `${Math.round(parseFloat(pix_value[0]) * 10 ** dec) / 10 ** dec} ${props.unit}`;
       } else {
         overlay.setPosition(undefined);
       }
@@ -63,11 +60,6 @@
     });
   });
 
-  watchEffect(() => {
-    if (props.llayer != null) {
-      unit.value = getUnit(props.llayer.name);
-    }
-  })
 
 </script>
 

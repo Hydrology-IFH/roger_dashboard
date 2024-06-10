@@ -1,8 +1,8 @@
 <script setup>
-  import { ref, watchEffect, onMounted } from 'vue'
+  import { ref, watchEffect, onMounted, computed } from 'vue'
   import TileLayer from 'ol/layer/WebGLTile.js';
   import GeoTIFF from 'ol/source/GeoTIFF.js';
-  import { fromArrayBuffer, fromBlob } from "geotiff";
+  import { fromBlob } from "geotiff";
   import { Map, View } from 'ol';
   import { buffer } from 'ol/extent';
 
@@ -13,6 +13,8 @@
   import { LayerLibrary } from './utils/layer_library/Library.mjs'
   import { useSettings } from '~/stores/settings'
   import { useControlFile } from '~/stores/controlFile'
+  import { getUnit } from './utils/units.mjs';
+  import Legend from './utils/Legend.vue';
 
   // define variables
   const settings = new useSettings()
@@ -26,15 +28,31 @@
     hover_decimals: ref(settings.map_default_hover_decimals),
     basemap: ref(settings.map_default_basemap),
     colorscale: ref(settings.map_default_colorscale),
-    colorscale_reverse: ref(settings.map_default_colorscale_reverse),
+    colorscale_reverse: ref(settings.map_default_colorscale_reverse)
   }
   const tif_range = ref([0, 15])
+  const colorscale_range = ref([0, 15])
+  const style = ref([])
 
   // load data from file
   const olayer = new TileLayer()
   const basemap_layer = new TileLayer({
     title: "Basemap",
     source: basemap_sources[map_settings.basemap]
+  })
+
+  // update layer label and unit
+  const unit = computed(() => {
+    if (layer_lib.value.selectedLayer != null) {
+      return getUnit(layer_lib.value.selectedLayer.name);
+    }
+    return ""
+  })
+  const layer_name = computed(() => {
+    if (layer_lib.value.selectedLayer != null) {
+      return layer_lib.value.selectedLayer.name;
+    }
+    return ""
   })
 
   // create openlayer map
@@ -83,14 +101,17 @@
   })
   // colorscale
   watchEffect(() => {
-    olayer.setStyle(
-      get_colorscale_tileLayer_style(
-        tif_range.value[0],
-        tif_range.value[1],
-        map_settings.colorscale.value,
-        true,
-        map_settings.colorscale_reverse.value)
-    )
+    style.value = get_colorscale_tileLayer_style(
+      colorscale_range.value[0],
+      colorscale_range.value[1],
+      map_settings.colorscale.value,
+      true,
+      map_settings.colorscale_reverse.value)
+    olayer.setStyle(style.value)
+  })
+  // colorscale range
+  watchEffect(() => {
+    colorscale_range.value = tif_range.value
   })
   // opacity
   watchEffect(() => {
@@ -155,14 +176,15 @@
     }
   })
 
-
-
 </script>
 
 <template>
   <div class="plot" ref="map_dom">
-    <hoverOverlay v-if="map_created" :map="cont.map" :olayer="olayer" :decimals="map_settings.hover_decimals.value" :llayer="layer_lib.selectedLayer"/>
+    <hoverOverlay v-if="map_created" :map="cont.map" :olayer="olayer"
+      :decimals="map_settings.hover_decimals.value"
+      :unit="unit"/>
     <mapSettingsApp v-if="map_created" :map="cont.map" :map_settings="map_settings" :layer_lib="layer_lib"/>
+    <Legend v-if="map_created" :layer_name="layer_name" :unit="unit" :map="cont.map" :style="style"/>
   </div>
 </template>
 

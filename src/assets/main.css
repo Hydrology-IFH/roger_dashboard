@@ -2,7 +2,6 @@
 @import "ol/ol.css";
 @import "ol-ext/dist/ol-ext.css";
 @import "bootstrap-icons/font/bootstrap-icons";
-/* @import "ol-ext/control/Legend.css"; */
 
 #app {
   max-width: 100%;

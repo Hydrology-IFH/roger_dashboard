@@ -109,5 +109,6 @@
     border-left:#6b6b6bc9 solid 1px;
     border-top:#6b6b6bc9 solid 1px;
     border-bottom:#6b6b6bc9 solid 1px;
+    z-index: 2;
   }
 </style>
