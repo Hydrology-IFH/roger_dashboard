@@ -2,6 +2,7 @@
   import { ref, onMounted, computed } from 'vue';
   import Overlay from 'ol-ext/control/Overlay.js';
   import Button from 'ol-ext/control/Button.js';
+  import { get_reasonable_digits } from '~/components/utils/reasonable_digits';
 
   // define variables
   const props = defineProps({
@@ -46,18 +47,7 @@
       ticks = [tick_min, tick_min + (tick_max - tick_min) / 2, tick_max];
     }
     // round ticks
-    let digits = 0;
-    switch (Math.abs(tick_max - tick_min)) {
-      case (v) => v < 10 && v > 1:
-        digits = 1;
-        break;
-      case (v) => v < 1 && v > 0.1:
-        digits = 2;
-        break;
-      case (v) => v < 0.1:
-        digits = 3;
-        break;
-    }
+    let digits = get_reasonable_digits(tick_min, tick_max);
     ticks = ticks.map((el) => Math.round(el, digits));
     return ticks
   })

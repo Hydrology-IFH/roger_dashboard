@@ -15,6 +15,7 @@
   import { useControlFile } from '~/stores/controlFile'
   import { getUnit } from './utils/units.mjs';
   import Legend from './utils/Legend.vue';
+  import { get_reasonable_digits } from '~/components/utils/reasonable_digits'
 
   // define variables
   const settings = new useSettings()
@@ -28,10 +29,10 @@
     hover_decimals: ref(settings.map_default_hover_decimals),
     basemap: ref(settings.map_default_basemap),
     colorscale: ref(settings.map_default_colorscale),
-    colorscale_reverse: ref(settings.map_default_colorscale_reverse)
+    colorscale_reverse: ref(settings.map_default_colorscale_reverse),
+    tif_range: ref([0, 15]),
+    colorscale_range: ref([0, 15])
   }
-  const tif_range = ref([0, 15])
-  const colorscale_range = ref([0, 15])
   const style = ref([])
 
   // load data from file
@@ -100,10 +101,11 @@
     }
   })
   // colorscale
+  window.map_settings = map_settings
   watchEffect(() => {
     style.value = get_colorscale_tileLayer_style(
-      colorscale_range.value[0],
-      colorscale_range.value[1],
+      map_settings.colorscale_range.value[0],
+      map_settings.colorscale_range.value[1],
       map_settings.colorscale.value,
       true,
       map_settings.colorscale_reverse.value)
@@ -111,7 +113,11 @@
   })
   // colorscale range
   watchEffect(() => {
-    colorscale_range.value = tif_range.value
+    let digits = get_reasonable_digits(map_settings.tif_range.value[0], map_settings.tif_range.value[1])
+    let rdigits = Math.pow(10, digits)
+    map_settings.colorscale_range.value = new Array(
+      Math.floor(map_settings.tif_range.value[0] * rdigits) / rdigits,
+      Math.ceil(map_settings.tif_range.value[1] * rdigits) / rdigits)
   })
   // opacity
   watchEffect(() => {
@@ -140,7 +146,7 @@
         .then(tif => tif.getImage())
         .then(img => img.readRasters())
         .then(rasters => {
-          tif_range.value = [Math.min(...rasters[0]), Math.max(...rasters[0])]
+          map_settings.tif_range.value = [Math.min(...rasters[0]), Math.max(...rasters[0])]
         })
         .catch(err => console.error(err))
 

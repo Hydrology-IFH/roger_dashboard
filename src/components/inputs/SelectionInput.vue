@@ -17,7 +17,7 @@
 </script>
 
 <template>
-  <div class="form-group input-group mb-3">
+  <div class="input-group mb-3">
     <span class="input-group-text" :id="`label_Select${id}`"
         ref="label_dom"
         data-bs-toggle="tooltip" data-bs-placement="top"

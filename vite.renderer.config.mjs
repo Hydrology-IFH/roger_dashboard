@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { pluginExposeRenderer } from './vite.base.config.mjs';
 import VueDevTools from 'vite-plugin-vue-devtools';
 import vue from '@vitejs/plugin-vue';
+import vuetify from 'vite-plugin-vuetify';
 
 // https://vitejs.dev/config
 export default defineConfig((env) => {
@@ -21,7 +22,8 @@ export default defineConfig((env) => {
     plugins: [
       vue(),
       pluginExposeRenderer(name),
-      VueDevTools()
+      VueDevTools(),
+      vuetify({ autoImport: true }),
     ],
     resolve: {
       preserveSymlinks: true,

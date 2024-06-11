@@ -7,6 +7,7 @@
   import DecimalsInput from '~/components/inputs/DecimalsInput.vue'
   import LayerSelection from './LayerSelection.vue'
   import SwitchInput from '~/components/inputs/SwitchInput.vue'
+  import RangeInput from '~/components/inputs/RangeInput.vue'
 
   const props = defineProps({
     map: Object,
@@ -58,6 +59,7 @@
       <SwitchInput name="reverse the Colorscale" v-model="map_settings.colorscale_reverse.value" tooltipMsg="Should the colorscale be reversed"/>
       <DecimalsInput v-model="map_settings.hover_decimals.value" :min=0 :max=6 tooltipMsg="Select the number of decimals to round the hover label to." name="Hover decimals"/>
       <DecimalsInput v-model="map_settings.opacity.value" :min=0 :max=100 tooltipMsg="Select the opacity of the map" name="Opacity"/>
+      <RangeInput v-model="map_settings.colorscale_range" :min="map_settings.tif_range.value[0]" :max="map_settings.tif_range.value[1]" tooltipMsg="Change the colorscale range of the map" name="Colorscale range"/>
     </div>
   </div>
 </template>
