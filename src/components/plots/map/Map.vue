@@ -101,7 +101,6 @@
     }
   })
   // colorscale
-  window.map_settings = map_settings
   watchEffect(() => {
     style.value = get_colorscale_tileLayer_style(
       map_settings.colorscale_range.value[0],

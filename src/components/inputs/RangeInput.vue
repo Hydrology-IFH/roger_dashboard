@@ -24,73 +24,57 @@
 </script>
 
 <template>
-  <div class="input-group input-group-vertical mb-3">
+  <div class="input-group mb-3">
     <span class="input-group-text" :id="`label_RangeInput_${id}`" ref="label_dom"
         data-bs-toggle="tooltip" data-bs-placement="top"
         :data-bs-title="tooltipMsg">
       {{ name }}
     </span>
-    <div class="input-group">
-      <input type="number" class="form-control no-arrows" :min="minr" :max="maxr" :step="step"
-        v-model.number="range.value[0]" style="max-width:70px" />
-      <v-range-slider class="form-control" v-model="range.value" :min="minr" :max="maxr" :step="step"
-        hide-details thumb-label="always" color="var(--bs-primary)"
+    <div class="form-control flex-column d-flex pl-0 pr-0 pb-0">
+      <v-range-slider v-model="range.value" :min="minr" :max="maxr" :step="step"
+        hide-details color="var(--bs-primary)" :strict="true"
       ></v-range-slider>
-      <input type="number" class="form-control no-arrows" :min="minr" :max="maxr"
-        v-model.number="range.value[1]" style="max-width:70px" />
+      <div class="d-flex flex-fill range-numbers">
+        <input type="number" class="form-control" :min="minr" :max="maxr"
+          v-model.number="range.value[0]"/>
+        <input type="number" class="form-control" :min="minr" :max="maxr"
+          v-model.number="range.value[1]" />
+      </div>
     </div>
-  </div>
+    </div>
 </template>
 
 <style scoped>
-  .input-group input[type="range"] {
+  .input-group {
     max-width: 400px;
+    height: fit-content;
   }
-  .input-group-vertical{
-    max-width: 400px;
-    flex-direction: column;
-  }
-  .input-group-vertical>.input-group-text{
-    width: 100%;
-    border-radius: 0px!important;
-    justify-content: center;
-    border-top-right-radius: var(--bs-border-radius)!important;
-    border-top-left-radius: var(--bs-border-radius)!important;
-    border-bottom: 0px;
-  }
-  .input-group-vertical>.input-group{
-    display: flex;
-    flex-direction: row;
-    width:100%;
-    flex-wrap: nowrap;
-    border-top: 0px;
-    margin-left: 0px!important;
-  }
-  .input-group-vertical>.input-group>:first-child{
-    border-top-left-radius: 0px;
-  }
-  .input-group-vertical>.input-group>:last-child{
-    border-top-right-radius: 0px;
-  }
-  input.no-arrows::-webkit-outer-spin-button,
-  input.no-arrows::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  input.no-arrows {
-    width: 6em;
-    text-align: center;
+  .input-group-text{
+    text-wrap: pretty;
+    width: min-content;
   }
   .v-input{
     padding-right: -8px;
+    align-content: end;
+    padding-left: 1em;
+    padding-right: 1em;
+    margin-right: 0;
+    overflow: visible;
   }
-
-</style>
-<style>
-.v-slider-thumb__label{
-  transform: rotate(180deg) translateX(100%) translateY(-250%) translateX(-50%)!important;
-}
-.v-slider-thumb__label>div{
-  transform: rotate(180deg)!important;
-}
+  .v-slider{
+    margin-inline: 0!important;
+  }
+  .range-numbers>input[type="number"] {
+    text-align: center;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .range-numbers>input:first-child {
+    border-bottom-right-radius: 0;
+  }
+  .range-numbers>input:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 </style>

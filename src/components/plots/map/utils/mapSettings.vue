@@ -84,6 +84,9 @@
   }
   .scrollable{
     overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.5em;
+    margin-right: -0.5em;
   }
   .header{
     position: sticky;
