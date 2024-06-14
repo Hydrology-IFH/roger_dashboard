@@ -78,9 +78,7 @@
 </script>
 
 <template>
-  <div class="plot" id="oa-plot" v-if="oa_ts_data.N.length>0">
-    <VuePlotly :data :layout />
-  </div>
+  <VuePlotly :data="data" :layout="layout" class="plot" v-if="oa_ts_data.N.length>0"/>
   <ErrorFrame v-else :msg="`I couldn't find an OA timeseries file (${FILEPATH}) in the output folder`" header="No OA data" type="dark"/>
 </template>
 
