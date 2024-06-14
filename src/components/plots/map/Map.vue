@@ -145,7 +145,9 @@
         .then(tif => tif.getImage())
         .then(img => img.readRasters())
         .then(rasters => {
-          map_settings.tif_range.value = [Math.min(...rasters[0]), Math.max(...rasters[0])]
+          map_settings.tif_range.value = [
+            rasters[0].reduce((acc, val) => Math.min(acc, val), Infinity),
+            rasters[0].reduce((acc, val) => Math.max(acc, val), -Infinity)]
         })
         .catch(err => console.error(err))
 
