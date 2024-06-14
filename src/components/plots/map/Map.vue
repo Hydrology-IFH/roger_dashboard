@@ -15,6 +15,7 @@
   import { useControlFile } from '~/stores/controlFile'
   import { getUnit } from './utils/units.mjs';
   import Legend from './utils/Legend.vue';
+  import TimeSlider from './utils/TimeSlider.vue';
   import { get_reasonable_digits } from '~/components/utils/reasonable_digits'
 
   // define variables
@@ -54,6 +55,9 @@
       return layer_lib.value.selectedLayer.name;
     }
     return ""
+  })
+  const sel_layer = computed(() => {
+    return layer_lib.value.selectedLayer
   })
 
   // create openlayer map
@@ -192,6 +196,7 @@
       :unit="unit"/>
     <mapSettingsApp v-if="map_created" :map="cont.map" :map_settings="map_settings" :layer_lib="layer_lib"/>
     <Legend v-if="map_created" :layer_name="layer_name" :unit="unit" :map="cont.map" :style="style"/>
+    <TimeSlider v-if="map_created" :map="cont.map" :layer="sel_layer"/>
   </div>
 </template>
 

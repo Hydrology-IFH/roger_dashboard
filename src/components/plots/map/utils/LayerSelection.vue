@@ -1,11 +1,12 @@
 <script setup>
-  import { computed } from 'vue'
+  import { computed, ref } from 'vue'
 
   const props = defineProps({
     layer_lib: Object,
     group_lib: Object,
   })
 
+  const id = ref(Date.now())
   const has_groups = computed(() => props.group_lib.groups.length > 0)
   const has_layers = computed(() => props.group_lib.layers.length > 0)
   const is_child = computed(() => props.group_lib === props.layer_lib)
@@ -14,22 +15,23 @@
 
 <template>
   <div class="list-group" v-if="has_layers" :class="{ 'has_groups': has_groups, 'is_child': is_child}">
-    <a href="#" class="list-group-item list-group-item-action"
+    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
       v-for="layer in group_lib.layers" :key="layer.id"
       @click="props.layer_lib.selectLayer(layer)"
       :class="{ active: layer.selected }">
-      {{ layer.name }}
+      {{ layer.name }} {{ layer.isRangeLayer }}
+      <i v-if="layer.isRangeLayer" class="bi bi-clock"></i>
     </a>
   </div>
-  <div class="accordion" :id="`accordionLayerSelection-${group_lib.id}`" v-if="has_groups" :class="{'has_layers': has_layers, 'is_child': props.is_child}">
+  <div class="accordion" :id="`accordionLayerSelection-${id}-${group_lib.id}`" v-if="has_groups" :class="{'has_layers': has_layers, 'is_child': props.is_child}">
     <div class="accordion-item" v-for="group in group_lib.groups" :key="group">
       <h2 class="accordion-header">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :class="{ active: group.selected }"
-          :data-bs-target="`#collapse-${group.id}`" aria-expanded="false" :aria-controls="`collapse-${group.id}`">
+          :data-bs-target="`#collapse-${id}-${group.id}`" aria-expanded="false" :aria-controls="`collapse-${id}-${group.id}`">
           {{ group.name }}
         </button>
       </h2>
-      <div :id="`collapse-${group.id}`" class="accordion-collapse collapse" :data-bs-parent="`#accordionLayerSelection-${group_lib.id}`">
+      <div :id="`collapse-${id}-${group.id}`" class="accordion-collapse collapse" :data-bs-parent="`#accordionLayerSelection-${id}-${group_lib.id}`">
         <div class="accordion-body">
           <LayerSelection :layer_lib="layer_lib" :group_lib="group"/>
         </div>
@@ -61,8 +63,4 @@
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
   }
-</style>
-<style>
-
-
 </style>

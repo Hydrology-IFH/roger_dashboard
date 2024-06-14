@@ -25,6 +25,10 @@ export class BaseLayer {
   addFile(path) {
     throw new Error('For BaseLayer, addFile is not implemented');
   }
+
+  get isRangeLayer() {
+    return false;
+  }
 }
 
 export class RangeLayer extends BaseLayer {
@@ -75,12 +79,43 @@ export class RangeLayer extends BaseLayer {
     return np.join(this.dir, `${name}.${this.suffix}`);
   }
 
-  selectStep(step) {
+  get step() {
+    return this._active_step;
+  }
+
+  set step(step) {
+    this.selectStep(step);
+  }
+
+  get minStep() {
+    return Math.min(...this.steps);
+  }
+
+  get maxStep() {
+    return Math.max(...this.steps);
+  }
+
+  selectStep(step, onErrorNearest = false) {
     if (this.steps.includes(step)) {
       this._active_step = step;
+    } else if (onErrorNearest) {
+      let nearest = this.steps.reduce((prev, curr) => Math.abs(curr - step) < Math.abs(prev - step) ? curr : prev);
+      this._active_step = nearest;
     } else {
       throw new Error(`Step ${step} does not exist`);
     }
+  }
+
+  nextStep() {
+    this.selectStep(this.steps[this.steps.indexOf(this._active_step) + 1] || this.steps[0]);
+  }
+
+  prevStep() {
+    this.selectStep(this.steps[this.steps.indexOf(this._active_step) - 1] || this.steps[this.steps.length - 1]);
+  }
+
+  get isRangeLayer() {
+    return true;
   }
 
 }
