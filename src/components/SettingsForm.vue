@@ -4,7 +4,7 @@
   import { useNotification } from "@kyvg/vue3-notification";
 
   import { useSettings } from '~/stores/settings'
-  import { usePlotsLayout, usePlotsLayoutDefault } from '~/stores/plotsLayout'
+  import { usePlotsLayout } from '~/stores/plotsLayout'
   import DecimalsInput from './inputs/DecimalsInput.vue'
   import SelectInput from './inputs/SelectionInput.vue'
   import SettingsControlFile from './SettingsControlFile.vue'
@@ -12,7 +12,7 @@
 
   const settings = useSettings()
   const layoutStore = usePlotsLayout()
-  const layoutStoreDefault = usePlotsLayoutDefault()
+  // const layoutStoreDefault = usePlotsLayoutDefault()
   const {notify} = useNotification()
 
   // Tooltips
@@ -33,7 +33,7 @@
 
   // plotView functions
   function savePlotLayout() {
-    layoutStoreDefault.setActualLayout()
+    layoutStore.setActualLayoutDefault()
     notify({
       type: "success",
       title: "Default plot layout saved",
@@ -41,7 +41,7 @@
     })
   }
   function resetPlotLayout() {
-    localStorage.removeItem("PlotsLayoutDefault")
+    layoutStore.resetDefaultLayout()
     notify({
       type: "success",
       title: "Default plot layout reset",
