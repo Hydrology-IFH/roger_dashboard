@@ -92,25 +92,27 @@
   <a id="AddPlotButton" type="button" data-bs-toggle="modal" data-bs-target="#addPlotModal">
     <i class="bi bi-plus-square" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Add a new plot"></i>
   </a>
-  <div class="modal fade" id="addPlotModal" aria-hidden="true" aria-labelledby="AddPlotModalButton" tabindex="-1" ref="modal_dom">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="addPlotModalLabel">Add a Plot Window</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="input-group">
-            <span class="input-group-text">Select a Plot</span>
-            <select class="form-select" id="plotSelect" v-model="selectedPlotKey">
-              <option v-for="plot in plotsLibrary.lib" :key="plot.key" :value="plot.key">{{ plot.label }}</option>
-            </select>
-            <button class="btn btn-primary" @click="addPlot">Add Plot</button>
+  <Teleport to="body">
+    <div class="modal fade" id="addPlotModal" aria-hidden="true" aria-labelledby="AddPlotModalButton" tabindex="-1" ref="modal_dom">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="addPlotModalLabel">Add a Plot Window</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <span class="input-group-text">Select a Plot</span>
+              <select class="form-select" id="plotSelect" v-model="selectedPlotKey">
+                <option v-for="plot in plotsLibrary.lib" :key="plot.key" :value="plot.key">{{ plot.label }}</option>
+              </select>
+              <button class="btn btn-primary" @click="addPlot">Add Plot</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 
 <style scoped>
