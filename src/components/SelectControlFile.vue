@@ -16,8 +16,7 @@
   const cf_store = useControlFile()
   watchEffect(() => {
     if (cfs_stores.active_control_file) {
-      console.log("loading control file", cfs_stores.active_control_file.file.value)
-      cf_store.loadControlFile(cfs_stores.active_control_file.file.value)
+      cf_store.loadControlFile(cfs_stores.active_control_file.file)
     }
   })
 
