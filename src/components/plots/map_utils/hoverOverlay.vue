@@ -80,8 +80,9 @@
     text-align: center;
     border-radius: 4px;
     padding: 5px;
-    margin: 2px;
+    margin-left: 4px;
+    margin-bottom: 4px;
     box-shadow: 0px 0px 2px 2px rgba(255,255,255,0.62);
-    pointer-events: none;
+    pointer-events: none!important;
   }
 </style>

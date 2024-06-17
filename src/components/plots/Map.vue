@@ -90,10 +90,19 @@
         zoom: 14
       }),
     });
-    cont["map"].getView().fit(
+    let map = cont["map"]
+    map.getView().fit(
       extent,
-      cont["map"].getSize());
+      map.getSize());
     map_created.value = true
+
+    // add map spinner
+    map.on('loadstart', function () {
+      map.getTargetElement().classList.add('spinner');
+    });
+    map.on('loadend', function () {
+      map.getTargetElement().classList.remove('spinner');
+    });
   })
 
   // watch settings changes
@@ -172,6 +181,7 @@
         normalize: false
       }));
 
+      // set view to tif extent
       const tif_view = await olayer.getSource().getView();
       if ("map" in cont) {
         cont["map"].setView(new View({
@@ -199,7 +209,7 @@
     <mapSettingsApp v-if="map_created" :map="cont.map" :map_settings="map_settings" :layer_lib="layer_lib"/>
     <Legend v-if="map_created" :layer_name="layer_name" :unit="unit" :map="cont.map" :style="style"/>
     <TimeSlider v-if="map_created" :map="cont.map" :layer="sel_layer"/>
-    <ErrorFrame v-if="!has_layers" message="No layers available"/>
+    <ErrorFrame v-if="!has_layers" header="No layers available" msg="There was no TIF layer in your RoGeR result folder"/>
   </div>
 </template>
 
@@ -207,6 +217,30 @@
   .plot {
     width: 100%;
     height: 100%;
+    min-width: 10px;
+    min-height: 10px;
+  }
+
+  @keyframes spinner {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spinner:after {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    margin-left: -20px;
+    border-radius: 50%;
+    border: 5px solid rgba(180, 180, 180, 0.6);
+    border-top-color: rgba(0, 0, 0, 0.6);
+    animation: spinner 0.6s linear infinite;
   }
 </style>
 <style>
