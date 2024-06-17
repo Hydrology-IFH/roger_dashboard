@@ -3,7 +3,7 @@
   import { markRaw } from 'vue'
 
   import { plotsLibrary } from './plots/plotsLibrary'
-  import { usePlotsLayout, usePlotsLayoutDefault } from '~/stores/plotsLayout'
+  import { usePlotsLayout } from '~/stores/plotsLayout'
   import { useControlFile } from '~/stores/controlFile'
   import { useControlFiles } from '~/stores/controlFiles'
   import ErrorFrame from './utils/ErrorFrame.vue'
@@ -12,10 +12,6 @@
   const layoutStore = usePlotsLayout()
   const layout = layoutStore.layout
   const colNum = layoutStore.colNum
-
-  // set default value
-  const layoutDefaultsStore = usePlotsLayoutDefault()
-  layoutDefaultsStore.layout.forEach(element => layout.push(element));
 
   // adding/removing plots functions
   function removePlot(item){
@@ -33,6 +29,8 @@
   // check if control file is selected
   const controlFileStore = useControlFile()
   const controlFilesStore = useControlFiles()
+
+  window.layoutStore = layoutStore
 
 </script>
 

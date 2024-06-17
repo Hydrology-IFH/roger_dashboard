@@ -65,10 +65,7 @@ export const useControlFiles = defineStore(
     },
     persist: {
       key: "ControlFilesArchive",
-      afterRestore: (context) => {
-        console.log("Before restore")
-        context.store.checkStore()
-      }
+      afterRestore: (context) => context.store.checkStore()
     },
   }
 )
