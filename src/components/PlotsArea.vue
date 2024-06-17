@@ -30,8 +30,6 @@
   const controlFileStore = useControlFile()
   const controlFilesStore = useControlFiles()
 
-  window.layoutStore = layoutStore
-
 </script>
 
 <template>

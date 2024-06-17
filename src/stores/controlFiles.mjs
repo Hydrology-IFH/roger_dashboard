@@ -8,7 +8,6 @@ class ControlFile {
   }
 
   get isValid(){
-    window.file = this.file
     return this.file && this.file.length > 0
   }
   // functions to serialize the object

@@ -13,7 +13,6 @@
   onMounted(() => {
     new Tooltip(label_dom.value)
   })
-  window.model = model
 </script>
 
 <template>
