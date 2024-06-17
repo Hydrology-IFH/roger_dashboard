@@ -20,6 +20,7 @@ export const useSettings = defineStore(
       map_default_basemap,
       crs_epsg,
       map_default_colorscale,
+      map_default_colorscale_reverse,
       map_default_opacity,
       map_default_hover_decimals
     }

@@ -1,4 +1,4 @@
-import MapPlot from './map/Map.vue';
+import MapPlot from './Map.vue';
 import OATimeseriePlot from './OATimeserie.vue';
 
 export const plotsLibrary = {
