@@ -4,6 +4,9 @@
 
   import { plotsLibrary } from './plots/plotsLibrary'
   import { usePlotsLayout, usePlotsLayoutDefault } from '~/stores/plotsLayout'
+  import { useControlFile } from '~/stores/controlFile'
+  import { useControlFiles } from '~/stores/controlFiles'
+  import ErrorFrame from './utils/ErrorFrame.vue'
 
   // get layout
   const layoutStore = usePlotsLayout()
@@ -27,6 +30,10 @@
     return markRaw(plot)
   }
 
+  // check if control file is selected
+  const controlFileStore = useControlFile()
+  const controlFilesStore = useControlFiles()
+
 </script>
 
 <template>
@@ -40,6 +47,7 @@
     use-css-transforms
     :prevent-collision="true"
     :vertical-compact="false"
+    v-if="controlFileStore.cf_valid"
   >
     <GridItem
         v-for="item in layout"
@@ -64,6 +72,14 @@
       </div>
     </GridItem>
   </GridLayout>
+  <ErrorFrame v-else-if="controlFilesStore.active_control_file == null"
+      msg="Please first select a RoGeR control file to show the results."
+      header="No control file got selected"
+      type="warning"/>
+  <ErrorFrame v-else
+    msg="Please select a valid RoGeR controlfile to show the results"
+    header="The selected control file is not valid"
+     />
 </template>
 
 <style scoped>

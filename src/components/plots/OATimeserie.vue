@@ -5,7 +5,7 @@
 
   import { useSettings } from '../../stores/settings'
   import { useControlFile } from '../../stores/controlFile'
-  import ErrorFrame from './utils/ErrorFrame.vue'
+  import ErrorFrame from '~/components/utils/ErrorFrame.vue'
 
   const settings = useSettings()
   const control_file = useControlFile()

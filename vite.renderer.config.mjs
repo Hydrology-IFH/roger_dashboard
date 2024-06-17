@@ -23,7 +23,7 @@ export default defineConfig((env) => {
       vue(),
       pluginExposeRenderer(name),
       VueDevTools(),
-      vuetify({ autoImport: true }),
+      vuetify({ autoImport: true })
     ],
     resolve: {
       preserveSymlinks: true,
