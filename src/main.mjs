@@ -1,6 +1,5 @@
 import './assets/main.css'
 import './scss/styles.scss'
-// import 'vuetify/styles'
 
 import { createApp } from 'vue'
 import Notifications from '@kyvg/vue3-notification'

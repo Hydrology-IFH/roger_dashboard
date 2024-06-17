@@ -17,6 +17,7 @@
   import Legend from './map_utils/Legend.vue';
   import TimeSlider from './map_utils/TimeSlider.vue';
   import { get_reasonable_digits } from '~/components/utils/reasonable_digits'
+  import ErrorFrame from '~/components/utils/ErrorFrame.vue'
 
   // define variables
   const settings = new useSettings()
@@ -59,6 +60,7 @@
   const sel_layer = computed(() => {
     return layer_lib.value.selectedLayer
   })
+  const has_layers = computed(() => layer_lib.value.layers.length > 0)
 
   // create openlayer map
   // ---------------------
@@ -197,6 +199,7 @@
     <mapSettingsApp v-if="map_created" :map="cont.map" :map_settings="map_settings" :layer_lib="layer_lib"/>
     <Legend v-if="map_created" :layer_name="layer_name" :unit="unit" :map="cont.map" :style="style"/>
     <TimeSlider v-if="map_created" :map="cont.map" :layer="sel_layer"/>
+    <ErrorFrame v-if="!has_layers" message="No layers available"/>
   </div>
 </template>
 

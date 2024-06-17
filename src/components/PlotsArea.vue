@@ -70,7 +70,7 @@
       </div>
     </GridItem>
   </GridLayout>
-  <ErrorFrame v-else-if="controlFilesStore.active_control_file == null"
+  <ErrorFrame v-else-if="controlFilesStore.active == null"
       msg="Please first select a RoGeR control file to show the results."
       header="No control file got selected"
       type="warning"/>
