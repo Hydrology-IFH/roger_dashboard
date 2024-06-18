@@ -1,15 +1,12 @@
 export function get_reasonable_digits(min, max) {
-  let digits = 0;
-  switch (Math.abs(max - min)) {
-    case (v) => v < 10 && v > 1:
-      digits = 1;
-      break;
-    case (v) => v < 1 && v > 0.1:
-      digits = 2;
-      break;
-    case (v) => v < 0.1:
-      digits = 3;
-      break;
+  let dif = Math.abs(max - min);
+  if (dif>=10){
+    return 0
+  } else if (dif < 10 && dif > 1){
+    return 1
+  } else if (dif <= 1 && dif > 0.1){
+    return 2
+  } else if (dif <= 0.1){
+    return 3
   }
-  return digits;
 }
