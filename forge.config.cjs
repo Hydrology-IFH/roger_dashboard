@@ -11,15 +11,11 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        setupIcon: 'public/favicon.ico',
+        setupIcon: 'public/Logo.ico'
       },
     },
     {
       name: '@electron-forge/maker-deb',
-    },
-    {
-      name: '@electron-forge/maker-zip',
-      platforms: ['darwin'],
     },
     {
       name: '@electron-forge/maker-dmg',

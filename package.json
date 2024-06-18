@@ -1,6 +1,7 @@
 {
   "name": "roger_dashboard",
-  "version": "0.1.0",
+  "productName": "RoGeR Dashboard",
+  "version": "0.1.1",
   "private": true,
   "main": ".vite/build/main.js",
   "author": {
@@ -12,7 +13,7 @@
   "icon": "public/favicon.ico",
   "scripts": {
     "dev": "electron-forge start",
-    "build": "vite build && electron-forge make",
+    "build": "electron-forge make",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
