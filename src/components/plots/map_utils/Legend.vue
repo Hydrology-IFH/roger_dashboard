@@ -21,7 +21,7 @@
     }
   })
   const style_col_ticks = computed(() => {
-    return props.style.color[2][3].slice(3);
+    return props.style.color[2].slice(3);
   })
   const ticks = computed(() => {
     // calculate amount of ticks

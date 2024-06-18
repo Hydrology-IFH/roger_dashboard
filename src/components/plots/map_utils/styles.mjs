@@ -37,13 +37,10 @@ export function get_colorscale_tileLayer_style(min, max, colorbar, continous = t
       color: [
         "case",
         ["!=", ["band", 2], 0],
-        ['case',
-          ["==", ["band", 1], 9998], [200, 200, 200],
-          [ 'interpolate',
-            ['linear'],
-            ["band", 1],
-            ...get_colorscale(min, max, colorbar, true, reverse),
-          ],
+        [ 'interpolate',
+          ['linear'],
+          ["band", 1],
+          ...get_colorscale(min, max, colorbar, true, reverse),
         ],
         ["color", 0,0,0,0]
       ]
