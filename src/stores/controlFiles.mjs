@@ -12,14 +12,14 @@ class ControlFile {
   }
   // functions to serialize the object
   toJSON(){
-    return JSON.stringify({
+    return {
       file: this.file,
       last_used: this.last_used
-    })
+    }
   }
 
   static fromJSON(json){
-    let data = JSON.parse(json)
+    let data = json instanceof String ? JSON.parse(json) : json;
     return new ControlFile(data.file, new Date(data.last_used))
   }
 }
@@ -74,14 +74,14 @@ export const useControlFiles = defineStore(
       afterRestore: (context) => context.store.checkStore(),
       serializer: {
         serialize: (value) => {
-          console.log("Serializing", value)
-          return JSON.stringify({
+          return {
             archive: value.archive.map(cf => cf.toJSON()),
             active: value.active ? value.active.toJSON() : null
-          })
+          }
         },
         deserialize: (value) => {
-          let data = JSON.parse(value)
+          // let data = JSON.parse(value)
+          let data = value;
           data.archive = data.archive.map(cf => ControlFile.fromJSON(cf))
           data.active = data.active ? ControlFile.fromJSON(data.active) : null
           return data

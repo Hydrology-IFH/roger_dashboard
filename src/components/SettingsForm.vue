@@ -33,7 +33,7 @@
 
   // plotView functions
   function savePlotLayout() {
-    layoutStore.setActualLayoutDefault()
+    layoutStore.setActualLayoutAsDefault()
     notify({
       type: "success",
       title: "Default plot layout saved",

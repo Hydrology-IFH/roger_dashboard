@@ -10,7 +10,6 @@ const isDev = process.env.NODE_ENV === 'development';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-process.env.APP_ROOT = path.join(__dirname, '..')
 
 const RENDERER_DIST = '.vite/renderer/main_window'
 
@@ -19,6 +18,9 @@ if (os.release().startsWith('6.1')) app.disableHardwareAcceleration()
 
 // Set application name for Windows 10+ notifications
 if (process.platform === 'win32') app.setAppUserModelId(app.getName())
+
+// prevent app startup on squirrel install
+if (require('electron-squirrel-startup')) app.quit();
 
 if (!app.requestSingleInstanceLock()) {
   app.quit()
@@ -29,11 +31,28 @@ const MAIN_WINDOW_VITE_DEV_SERVER_URL = process.env.MAIN_WINDOW_VITE_DEV_SERVER_
 
 let win
 
-function createWindow () {
+async function createWindow () {
+  // initiate electron store
+  await import('electron-store')
+    .then((imp) => imp.default)
+    .then((Store) => {
+      let store = new Store()
+      console.log("Initiating store")
+      ipcMain.on('electron-store-get', async (event, val) => {
+        event.returnValue = store.get(val)
+      });
+      ipcMain.on('electron-store-set', async (event, key, val) => {
+        console.log("Setting", key, val)
+        store.set(key, val);
+      });
+    })
+    .catch((err) => console.error(err))
+
+  // Create the browser window.
   win = new BrowserWindow({
     width: 1600,
     height: 1100,
-    icon: path.join(process.env.APP_ROOT, 'public/favicon.ico'),
+    icon: path.join(__dirname, 'Logo.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,

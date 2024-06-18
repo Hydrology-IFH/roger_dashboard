@@ -9,7 +9,15 @@ contextBridge.exposeInMainWorld(
       on: (channel, func) => ipcRenderer.on(channel, func),
       once: (channel, func) => ipcRenderer.once(channel, func),
       removeAllListeners: (channel) => ipcRenderer.removeAllListeners(channel),
-    }
+    },
+    store: {
+      get(key) {
+        return ipcRenderer.sendSync('electron-store-get', key);
+      },
+      set(property, val) {
+        ipcRenderer.send('electron-store-set', property, val);
+      },
+    },
   }
 )
 contextBridge.exposeInMainWorld('nodePath', {
