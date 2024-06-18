@@ -31,6 +31,7 @@
     let tick_max = ticks.at(-1);
     let n_max = 8;
     if (n_ticks > n_max) {
+      // select only some of the ticks
       let factor;
       let start_i = (n_ticks - (n_ticks % n_max) + n_max) / n_max;
       for (let i = start_i; i <= n_ticks+1; i++) {
@@ -48,9 +49,12 @@
     }
     // round ticks
     let digits = get_reasonable_digits(tick_min, tick_max);
-    ticks = ticks.map((el) => Math.round(el, digits));
+    let rdigits = Math.pow(10, digits);
+    ticks = ticks.map((el) => Math.round(el*rdigits)/rdigits);
+
     return ticks
   })
+
   const cb_style = computed(() => {
     let colors = style_col_ticks.value.filter((el) => el instanceof Array);
     return `background: linear-gradient(to right, rgb(${colors.join("), rgb(")})`

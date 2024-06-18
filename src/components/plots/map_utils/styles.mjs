@@ -12,12 +12,13 @@ const get_colorscale = function (min, max, colorbar, continous=true, reverse=fal
     step = Math.floor(length / MAX_STEPS);
     length = Math.ceil(length / step);
   } else if (length < MIN_STEPS) {
-    fact = MIN_STEPS / length;
+    fact = (length-1) / (MIN_STEPS-1);
+    length = MIN_STEPS;
   }
-  let values = Array.from({ length:length }, (value, index) => min + index * step);
+  let values = Array.from({ length:length }, (value, index) => min + (index * step * fact));
   let colors = colormap({
     colormap: colorbar,
-    nshades: fact == 1? values.length:9, // duplicat as some colormaps need at least 9 nshades
+    nshades: length, // duplicat as some colormaps need at least 9 nshades
     format: 'rba',
     alpha: 1
   });
@@ -25,9 +26,9 @@ const get_colorscale = function (min, max, colorbar, continous=true, reverse=fal
     colors = colors.reverse();
   }
   if (continous) {
-    return values.map((value, index) => [value, colors[Math.round(index*fact)]]).flat();
+    return values.map((value, index) => [value, colors[index]]).flat();
   } else {
-    return values.map((value, index) => [["==", ["band", 1], value], colors[Math.round(index*fact)]]).flat();
+    return values.map((value, index) => [["==", ["band", 1], value], colors[Math.round(index)]]).flat();
   }
 }
 

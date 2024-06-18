@@ -10,13 +10,20 @@
     max: {Number, default: 100},
     tooltipMsg: String,
   })
+  const label_dom = ref(null)
 
   const digits = computed(() => get_reasonable_digits(props.min, props.max))
   const step = computed(() => Math.pow(10, -digits.value))
-  const id = props.name.replace(/\s/g, '_')
-  const label_dom = ref(null)
-  const minr = computed(() => Math.floor(props.min * Math.pow(10, digits.value)) / Math.pow(10, digits.value))
-  const maxr = computed(() => Math.ceil(props.max * Math.pow(10, digits.value)) / Math.pow(10, digits.value))
+  const id = computed(() => props.name.replace(/\s/g, '_'))
+
+  const minr = computed(() => Math.min(
+    Math.floor(props.min * Math.pow(10, digits.value)) / Math.pow(10, digits.value),
+    range.value[0])
+  )
+  const maxr = computed(() => Math.max(
+    Math.ceil(props.max * Math.pow(10, digits.value)) / Math.pow(10, digits.value),
+    range.value[1])
+  )
 
   onMounted(() => {
     new Tooltip(label_dom.value)
@@ -31,14 +38,14 @@
       {{ name }}
     </span>
     <div class="form-control flex-column d-flex pl-0 pr-0 pb-0">
-      <v-range-slider v-model="range.value" :min="minr" :max="maxr" :step="step"
+      <v-range-slider v-model="range" :min="minr" :max="maxr" :step="step"
         hide-details color="var(--bs-primary)" :strict="true"
       ></v-range-slider>
       <div class="d-flex flex-fill range-numbers">
         <input type="number" class="form-control" :min="minr" :max="maxr"
-          v-model.number="range.value[0]"/>
+          v-model.number.lazy="range[0]"/>
         <input type="number" class="form-control" :min="minr" :max="maxr"
-          v-model.number="range.value[1]" />
+          v-model.number.lazy="range[1]" />
       </div>
     </div>
     </div>

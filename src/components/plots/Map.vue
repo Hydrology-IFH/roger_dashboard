@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, watchEffect, onMounted, computed } from 'vue'
+  import { ref, watchEffect, onMounted, computed, watch } from 'vue'
   import TileLayer from 'ol/layer/WebGLTile.js';
   import GeoTIFF from 'ol/source/GeoTIFF.js';
   import { fromBlob } from "geotiff";
@@ -33,7 +33,8 @@
     colorscale: ref(settings.map_default_colorscale),
     colorscale_reverse: ref(settings.map_default_colorscale_reverse),
     tif_range: ref([0, 15]),
-    colorscale_range: ref([0, 15])
+    colorscale_range: ref([0, 15]),
+    fix_colorscale_range: ref(false)
   }
   const style = ref([])
 
@@ -127,11 +128,16 @@
   })
   // colorscale range
   watchEffect(() => {
-    let digits = get_reasonable_digits(map_settings.tif_range.value[0], map_settings.tif_range.value[1])
-    let rdigits = Math.pow(10, digits)
-    map_settings.colorscale_range.value = new Array(
-      Math.floor(map_settings.tif_range.value[0] * rdigits) / rdigits,
-      Math.ceil(map_settings.tif_range.value[1] * rdigits) / rdigits)
+    if (!map_settings.fix_colorscale_range.value) {
+      map_settings.colorscale_range.value = map_settings.tif_range.value
+    }
+    if (sel_layer.value != null) {
+      map_settings.fix_colorscale_range.value = sel_layer.value.isRangeLayer ? true : false;
+    }
+  })
+  // reset fixing colorscale range when layer changes
+  watch(sel_layer, () => {
+    map_settings.fix_colorscale_range.value = false;
   })
   // opacity
   watchEffect(() => {
@@ -160,9 +166,13 @@
         .then(tif => tif.getImage())
         .then(img => img.readRasters())
         .then(rasters => {
-          map_settings.tif_range.value = [
-            rasters[0].reduce((acc, val) => Math.min(acc, val), Infinity),
-            rasters[0].reduce((acc, val) => Math.max(acc, val), -Infinity)]
+          let min = rasters[0].reduce((acc, val) => Math.min(acc, val), Infinity)
+          let max = rasters[0].reduce((acc, val) => Math.max(acc, val), -Infinity)
+          let digits = get_reasonable_digits(min, max)
+          let rdigits = Math.pow(10, digits)
+          map_settings.tif_range.value = new Array(
+            Math.floor(min * rdigits) / rdigits,
+            Math.ceil(max * rdigits) / rdigits)
         })
         .catch(err => console.error(err))
 
@@ -198,7 +208,6 @@
       console.error(error)
     }
   })
-
 </script>
 
 <template>
