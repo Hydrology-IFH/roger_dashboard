@@ -27,12 +27,13 @@ module.exports = {
   publishers: [
     {
       name: '@electron-forge/publisher-github',
+      authToken: process.env.GITHUB_TOKEN,
       config: {
         repository: {
-          owner: 'me',
-          name: 'awesome-thing'
+          owner: 'Hydrology-IFH',
+          name: 'roger_dashboard'
         },
-        prerelease: true
+        prerelease: false
       }
     }
   ],

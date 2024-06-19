@@ -1,7 +1,7 @@
 {
   "name": "roger_dashboard",
   "productName": "RoGeR Dashboard",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "main": ".vite/build/main.js",
   "author": {
@@ -11,6 +11,10 @@
   "license": "MIT",
   "description": "A dashboard for ROGER model results",
   "icon": "public/favicon.ico",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hydrology-IFH/roger_dashboard"
+  },
   "scripts": {
     "dev": "electron-forge start",
     "build": "electron-forge make",
@@ -55,6 +59,7 @@
     "plotly.js-dist": "^2.30.1",
     "popper.js": "^1.16.1",
     "proj4": "^2.11.0",
+    "update-electron-app": "^3.0.0",
     "uuid": "^9.0.1",
     "vite-plugin-vuetify": "^2.0.3",
     "vue": "^3.4.21",
@@ -71,6 +76,7 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/plugin-fuses": "^7.4.0",
     "@electron-forge/plugin-vite": "^7.4.0",
+    "@electron-forge/publisher-github": "^7.4.0",
     "@electron/fuses": "^1.8.0",
     "@rushstack/eslint-patch": "^1.3.3",
     "@vitejs/plugin-vue": "^5.0.5",

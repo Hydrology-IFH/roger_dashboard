@@ -28,6 +28,10 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0)
 }
 
+// check for updates
+const { updateElectronApp } = require('update-electron-app')
+updateElectronApp()
+
 const MAIN_WINDOW_VITE_DEV_SERVER_URL = process.env.MAIN_WINDOW_VITE_DEV_SERVER_URL
 
 let win
