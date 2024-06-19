@@ -22,6 +22,7 @@ if (process.platform === 'win32') app.setAppUserModelId(app.getName())
 // prevent app startup on squirrel install
 if (require('electron-squirrel-startup')) app.quit();
 
+// prevent multiple instances of the app
 if (!app.requestSingleInstanceLock()) {
   app.quit()
   process.exit(0)
