@@ -1,4 +1,4 @@
-# roger_dashboard
+# RoGeR Dashboard
 
 This is a small dashboard electron app to visualize RoGeR results.
 
