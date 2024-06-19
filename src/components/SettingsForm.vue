@@ -9,6 +9,7 @@
   import SelectInput from './inputs/SelectionInput.vue'
   import SettingsControlFile from './SettingsControlFile.vue'
   import SwitchInput from './inputs/SwitchInput.vue'
+  import SettingsAbout from './SettingsAbout.vue'
 
   const settings = useSettings()
   const layoutStore = usePlotsLayout()
@@ -75,6 +76,9 @@
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" id="control-file-tab" data-bs-toggle="tab" data-bs-target="#control-file-tab-pane" type="button" role="tab" aria-controls="control-file-tab-pane" aria-selected="false">Control File</button>
                 </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="about-tab" data-bs-toggle="tab" data-bs-target="#about-tab-pane" type="button" role="tab" aria-controls="about-tab-pane" aria-selected="false">About</button>
+                </li>
               </ul>
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="representation-tab-pane" role="tabpanel" aria-labelledby="representation-tab" tabindex="0">
@@ -112,6 +116,9 @@
                 </div>
                 <div class="tab-pane fade" id="control-file-tab-pane" role="tabpanel" aria-labelledby="control-file-tab" tabindex="0">
                   <SettingsControlFile/>
+                </div>
+                <div class="tab-pane fade" id="about-tab-pane" role="tabpanel" aria-labelledby="about-tab" tabindex="0">
+                  <SettingsAbout/>
                 </div>
               </div>
             </form>

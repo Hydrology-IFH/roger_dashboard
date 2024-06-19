@@ -9,7 +9,7 @@
     "email": "max.schmit@hydrology.uni-freiburg.de"
   },
   "license": "MIT",
-  "description": "A dashboard for ROGER model results",
+  "description": "This is a small dashboard to visualize RoGeR model results",
   "icon": "public/favicon.ico",
   "repository": {
     "type": "git",
