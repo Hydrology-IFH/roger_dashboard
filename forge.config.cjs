@@ -33,7 +33,8 @@ module.exports = {
           owner: 'Hydrology-IFH',
           name: 'roger_dashboard'
         },
-        prerelease: false
+        prerelease: false,
+        draft: false
       }
     }
   ],
