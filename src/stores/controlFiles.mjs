@@ -67,6 +67,12 @@ export const useControlFiles = defineStore(
           console.log("Removing unvalid active control file", this.active)
           this.active = null
         }
+      },
+      removeControlFile(cf_path){
+        if (this.active.file === cf_path){
+          this.active = null
+        }
+        this.archive.splice(this.archive.findIndex(cf => cf.file === cf_path), 1)
       }
     },
     persist: {
