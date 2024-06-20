@@ -166,7 +166,8 @@
         .then(tif => tif.getImage())
         .then(img => img.readRasters())
         .then(rasters => {
-          let min = rasters[0].reduce((acc, val) => Math.min(acc, val), Infinity)
+          let min = Math.max(0,
+            rasters[0].reduce((acc, val) => Math.min(acc, val), Infinity))
           let max = rasters[0].reduce((acc, val) => Math.max(acc, val), -Infinity)
           let digits = get_reasonable_digits(min, max)
           let rdigits = Math.pow(10, digits)
