@@ -79,9 +79,12 @@ async function createWindow () {
     win.webContents.openDevTools()
   }
 
-  // set shortcut to activate devtools
+  // set shortcuts
   globalShortcut.register('CommandOrControl+Shift+I', () => {
     BrowserWindow.getFocusedWindow().webContents.openDevTools()
+  })
+  globalShortcut.register('F5', () => {
+    BrowserWindow.getFocusedWindow().webContents.reload()
   })
 }
 
