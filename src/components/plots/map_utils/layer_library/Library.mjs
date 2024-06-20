@@ -89,7 +89,7 @@ export class LayerGroup {
   }
 
   get hasLayers() {
-    return this.layers.length > 0 || this.groups.hasLayers;
+    return this.layers.length > 0 || this.groups.some(group => group.hasLayers);
   }
 }
 

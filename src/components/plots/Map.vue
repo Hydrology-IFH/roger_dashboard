@@ -209,6 +209,8 @@
       console.error(error)
     }
   })
+  window.has_layers = has_layers
+  window.layer_lib = layer_lib
 </script>
 
 <template>
