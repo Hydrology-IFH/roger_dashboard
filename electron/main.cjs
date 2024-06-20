@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 const path = require('node:path');
 const os = require('node:os');
 const fs = require('node:fs');
@@ -78,6 +78,11 @@ async function createWindow () {
   if (isDev){
     win.webContents.openDevTools()
   }
+
+  // set shortcut to activate devtools
+  globalShortcut.register('CommandOrControl+Shift+I', () => {
+    BrowserWindow.getFocusedWindow().webContents.openDevTools()
+  })
 }
 
 app.whenReady().then(() => {
