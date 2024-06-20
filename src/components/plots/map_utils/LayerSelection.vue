@@ -19,7 +19,7 @@
       v-for="layer in group_lib.layers" :key="layer.id"
       @click="props.layer_lib.selectLayer(layer)"
       :class="{ active: layer.selected }">
-      {{ layer.name }} {{ layer.isRangeLayer }}
+      {{ layer.name }}
       <i v-if="layer.isRangeLayer" class="bi bi-clock"></i>
     </a>
   </div>
