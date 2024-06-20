@@ -104,12 +104,6 @@
         </div>
         <div class="colorbar-label">{{ label }}</div>
       </div>
-      <div class="colorbar-dis ol-legend">
-        <div class="colorbar-element">
-          <div class="colorbar-color" style="background: rgb(200, 200, 200);"></div>
-          <div class="colorbar-tick">no data</div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
