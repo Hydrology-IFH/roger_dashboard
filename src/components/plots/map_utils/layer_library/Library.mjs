@@ -87,6 +87,10 @@ export class LayerGroup {
       return this.groups.forEach(group => group.selectFirstLayer());
     }
   }
+
+  get hasLayers() {
+    return this.layers.length > 0 || this.groups.hasLayers;
+  }
 }
 
 // LayerLibrary is the main Library class for all layers

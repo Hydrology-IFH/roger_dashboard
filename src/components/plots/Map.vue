@@ -61,7 +61,7 @@
   const sel_layer = computed(() => {
     return layer_lib.value.selectedLayer
   })
-  const has_layers = computed(() => layer_lib.value.layers.length > 0)
+  const has_layers = computed(() => layer_lib.value.hasLayers)
 
   // create openlayer map
   // ---------------------
