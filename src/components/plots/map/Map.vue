@@ -6,16 +6,16 @@
   import { Map, View } from 'ol';
   import { buffer } from 'ol/extent';
 
-  import  { get_colorscale_tileLayer_style } from './map_utils/styles'
-  import { basemap_sources } from './map_utils/basemap'
-  import hoverOverlay from './map_utils/hoverOverlay.vue'
-  import mapSettingsApp from './map_utils/mapSettings.vue'
-  import { LayerLibrary } from './map_utils/layer_library/Library.mjs'
+  import  { get_colorscale_tileLayer_style } from './utils/styles'
+  import { basemap_sources } from './utils/basemap'
+  import hoverOverlay from './utils/hoverOverlay.vue'
+  import mapSettingsApp from './utils/mapSettings.vue'
+  import { LayerLibrary } from './utils/layer_library/Library.mjs'
   import { useSettings } from '~/stores/settings'
   import { useControlFile } from '~/stores/controlFile'
-  import { getUnit } from './map_utils/units.mjs';
-  import Legend from './map_utils/Legend.vue';
-  import TimeSlider from './map_utils/TimeSlider.vue';
+  import { getUnit } from './utils/units.mjs';
+  import Legend from './utils/Legend.vue';
+  import TimeSlider from './utils/TimeSlider.vue';
   import { get_reasonable_digits } from '~/components/utils/reasonable_digits'
   import ErrorFrame from '~/components/utils/ErrorFrame.vue'
 

@@ -1,5 +1,4 @@
-import MapPlot from './Map.vue';
-import OATimeseriePlot from './OATimeserie.vue';
+import MapPlot from './map/Map.vue';
 import Hydrograph from './hydrograph/Hydrograph.vue';
 
 export const plotsLibrary = {
