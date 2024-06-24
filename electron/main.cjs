@@ -41,7 +41,9 @@ async function createWindow () {
   await import('electron-store')
     .then((imp) => imp.default)
     .then((Store) => {
-      let store = new Store()
+      let store = new Store({
+        migrations: require('./store-migrations').default,
+      })
       console.log("Initiating store")
       ipcMain.on('electron-store-get', async (event, val) => {
         event.returnValue = store.get(val)
