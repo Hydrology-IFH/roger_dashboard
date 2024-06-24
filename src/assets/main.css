@@ -3,6 +3,7 @@
 @import "ol-ext/dist/ol-ext.css";
 @import "bootstrap-icons/font/bootstrap-icons";
 @import "vuetify/styles";
+@import '@mdi/font/css/materialdesignicons.css';
 
 #app {
   max-width: 100%;

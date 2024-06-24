@@ -15,7 +15,9 @@
   <div class="ErrorFrame" id="ErrorFrame">
     <div class="alert" :class="`alert-${type}`" role="alert">
       <h4 class="alert-heading">{{ header }}</h4>
-      <p>{{ msg }}</p>
+      <slot name="message">
+        <p>{{ msg }}</p>
+      </slot>
     </div>
   </div>
 </template>

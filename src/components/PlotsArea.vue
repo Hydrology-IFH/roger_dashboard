@@ -63,7 +63,7 @@
           <i class="bi bi-x-lg" v-on:click="removePlot(item)"></i>
         </div>
         <div class="no-drag">
-          <component class="vue-drag-plot" :is="getPlotComponent(item.plotKey)"/>
+          <component :is="getPlotComponent(item.plotKey)"/>
         </div>
       </div>
     </GridItem>
