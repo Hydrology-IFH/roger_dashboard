@@ -27,6 +27,7 @@
     // calculate amount of ticks
     let ticks = style_col_ticks.value.filter((el) => !(el instanceof Array));
     let n_ticks = ticks.length;
+    let max_index = n_ticks - 1;
     let tick_min = ticks[0];
     let tick_max = ticks.at(-1);
     let n_max = 8;
@@ -35,12 +36,12 @@
       let factor;
       let start_i = (n_ticks - (n_ticks % n_max) + n_max) / n_max;
       for (let i = start_i; i <= n_ticks+1; i++) {
-        if ((n_ticks+1) % i == 0) {
+        if (max_index % i == 0) {
           factor = i;
           break;
         }
       }
-      ticks = ticks.filter((el) => ((ticks.indexOf(el)+2) % factor == 0) | (ticks.indexOf(el) == 0));
+      ticks = ticks.filter((el, i) => (i % factor == 0) );
       n_ticks = ticks.length;
     }
     if ((n_ticks == 2) & ((tick_max - tick_min) % 2 == 0)) {
