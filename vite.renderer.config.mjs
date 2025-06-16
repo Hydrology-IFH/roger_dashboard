@@ -32,5 +32,14 @@ export default defineConfig((env) => {
       }
     },
     clearScreen: false,
+    // silence warnings from bootstrap with dart sass
+    // have a look at https://github.com/twbs/bootstrap/issues/40962
+    css: {
+      preprocessorOptions: {
+        scss: {
+          silenceDeprecations: ['mixed-decls', 'color-functions', 'global-builtin', 'import', 'legacy-js-api']
+        },
+      }
+    }
   };
 });
