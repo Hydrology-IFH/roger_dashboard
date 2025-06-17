@@ -1,4 +1,6 @@
 *.tif
 test-results/
 out/
-dist-electron/
+*.pfx
+.env
+.env.save

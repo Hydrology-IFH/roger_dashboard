@@ -1,11 +1,11 @@
 name: Build/release
 
 on:
-  # push:
-  #   branches:
-  #   - main
-  #   tags:
-  #     - 'v[0-9]+.[0-9]+.[0-9]+'
+  push:
+    branches:
+    - master
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
   workflow_dispatch:
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [windows-latest]
 
     steps:
       - name: Check out Git repository
@@ -24,6 +24,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 20
+      - name: store certificate as file
+        if: matrix.os == 'windows-latest'
+        run: |
+          echo|set /p="%WINDOWS_CERTIFICATE_BASE64%" | base64 --decode > ./windows-certificate.pfx
+        env:
+          WINDOWS_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_CERTIFICATE_BASE64 }}
+        shell: cmd
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
