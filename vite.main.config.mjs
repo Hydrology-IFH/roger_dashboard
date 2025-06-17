@@ -3,7 +3,6 @@ import {
   getBuildConfig,
   getBuildDefine,
   packagesBuiltins,
-  packagesProject,
   pluginHotRestart,
 } from './vite.base.config.mjs';
 
@@ -21,7 +20,9 @@ export default defineConfig((env) => {
         formats: ['cjs'],
       },
       rollupOptions: {
-        external: ["electron", ...packagesBuiltins, ...packagesProject],
+        // Ensure that the Electron main process code is treated as an external dependency. ^
+        //  adding packagesProject adds problems with the build.
+        external: ["electron", ...packagesBuiltins]
       },
     },
     plugins: [
