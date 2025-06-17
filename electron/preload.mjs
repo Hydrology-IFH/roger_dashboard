@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge, ipcRenderer, webUtils } from 'electron';
 
 contextBridge.exposeInMainWorld(
   'electron',
@@ -17,6 +17,9 @@ contextBridge.exposeInMainWorld(
       set(property, val) {
         ipcRenderer.send('electron-store-set', property, val);
       },
+    },
+    webUtils: {
+      getPathForFile: (file) => webUtils.getPathForFile(file)
     },
   }
 )
