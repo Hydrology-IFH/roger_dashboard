@@ -2,7 +2,8 @@ import { defineConfig, mergeConfig } from 'vite';
 import {
   getBuildConfig,
   getBuildDefine,
-  external,
+  packagesBuiltins,
+  packagesProject,
   pluginHotRestart,
 } from './vite.base.config.mjs';
 
@@ -20,7 +21,7 @@ export default defineConfig((env) => {
         formats: ['cjs'],
       },
       rollupOptions: {
-        external,
+        external: ["electron", ...packagesBuiltins, ...packagesProject],
       },
     },
     plugins: [
