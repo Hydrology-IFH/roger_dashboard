@@ -53,7 +53,7 @@ export class RangeLayer extends BaseLayer {
   }
 
   addFile(path) {
-    let [dir, full_name, suf] = splitPath(path);
+    let [dir, full_name, ] = splitPath(path);
     let name = RangeLayer.getRangeName(full_name);
     if (dir === this.dir && name === this.name) {
       this.steps.push(RangeLayer.getStep(full_name));

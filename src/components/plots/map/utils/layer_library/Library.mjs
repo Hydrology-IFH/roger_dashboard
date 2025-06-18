@@ -150,7 +150,7 @@ export class LayerLibrary extends LayerGroup {
 
   addLayer(file, group = this.getAndAddFileGroup(file)) {
     // check if layer already exists
-    let [dir, name, suf] = splitPath(file);
+    let [dir, name, ] = splitPath(file);
     let existing_layers = group.layers.filter((child) => child.name === name && child.dir === dir);
     let new_layer = undefined;
     if (existing_layers.length === 0) {
