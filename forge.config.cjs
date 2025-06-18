@@ -1,17 +1,27 @@
 const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
+// load .dotenv file
+require('dotenv').config();
+
+// main configuration for Electron Forge
 module.exports = {
   packagerConfig: {
     asar: true,
-    icon: 'public/Logo'
+    icon: 'public/Logo',
   },
-  rebuildConfig: {},
+  rebuildConfig: {
+    force: true,
+    // onlyModules:
+  },
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        setupIcon: 'public/Logo.ico'
+        setupIcon: 'public/Logo.ico',
+        iconUrl: 'https://raw.githubusercontent.com/Hydrology-IFH/roger_dashboard/master/public/Logo.ico',
+        certificateFile: './windows-certificate.pfx',
+        certificatePassword: process.env.WINDOWS_CERTIFICATE_PASSWORD
       },
     },
     {
@@ -46,11 +56,8 @@ module.exports = {
     {
       name: '@electron-forge/plugin-vite',
       config: {
-        // `build` can specify multiple entry builds, which can be Main process, Preload scripts, Worker process, etc.
-        // If you are familiar with Vite configuration, it will look really familiar.
         build: [
           {
-            // `entry` is just an alias for `build.lib.entry` in the corresponding file of `config`.
             entry: 'electron/main.cjs',
             config: 'vite.main.config.mjs',
           },
@@ -68,8 +75,6 @@ module.exports = {
         ],
       },
     },
-    // Fuses are used to enable/disable various Electron functionality
-    // at package time, before code signing the application
     new FusesPlugin({
       version: FuseVersion.V1,
       [FuseV1Options.RunAsNode]: false,

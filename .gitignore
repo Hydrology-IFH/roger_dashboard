@@ -27,6 +27,7 @@ coverage
 *.sln
 *.sw?
 *.tsbuildinfo
+.env
 
 # specific files
 test-results/**/*.flt
@@ -34,3 +35,4 @@ test-results/**/*.hdr
 test-results/**/*tif.aux.xml
 out/
 .vite/
+*.pfx

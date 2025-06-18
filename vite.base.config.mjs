@@ -2,12 +2,10 @@ import { builtinModules } from 'node:module';
 import pkg from './package.json';
 import process from 'node:process';
 
-export const builtins = [
-  'electron',
+export const packagesBuiltins = [
   ...builtinModules.map((m) => [m, `node:${m}`]).flat(),
 ];
-
-export const external = [...builtins, ...Object.keys(pkg.dependencies || {})];
+export const packagesProject = Object.keys(pkg.dependencies ?? {});
 
 /** @type {(env: import('vite').ConfigEnv<'build'>) => import('vite').UserConfig} */
 export const getBuildConfig = (env) => {

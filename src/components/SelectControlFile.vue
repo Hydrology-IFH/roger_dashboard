@@ -29,7 +29,8 @@
   function onNewSelect(e) {
     let file = e.target.files[0]
     if (file) {
-      cfs_stores.selectControlFile(file.path)
+      cfs_stores.selectControlFile(
+        window.electron.webUtils.getPathForFile(file))
     }
   }
 
