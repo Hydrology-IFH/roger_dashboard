@@ -28,6 +28,7 @@ coverage
 *.sw?
 *.tsbuildinfo
 .env
+.vscode/settings.json
 
 # specific files
 test-results/**/*.flt
